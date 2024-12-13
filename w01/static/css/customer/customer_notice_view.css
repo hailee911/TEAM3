@@ -44,7 +44,11 @@ table, tr, td{
   width: 100%;
   display: flex;
   position: relative;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  padding-bottom: 40px;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;    
 }
 
 .modify_del_slide{
@@ -57,8 +61,15 @@ table, tr, td{
 }
 
 .customer_view_title h2{
-  font-size: 24px;
+  width: 1000px;
+  font-size: 32px;
   margin-bottom: 17px;
+  border-bottom: 2px solid #7D7D7D;  
+  text-align: center; 
+  margin-left: auto;
+  margin-right: auto; 
+  padding-bottom: 40px;
+  margin-bottom: 14px;
 }
 
 .customer_view_title span{
@@ -67,20 +78,26 @@ table, tr, td{
   font-size: 16px;
   color: #444444;
   margin-bottom: 6px;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 10px;
 }
+
 
 /* 일기내용 */
 #customer_content{
-  width: 100%;
+  width: 1000px;
+  /* display: flex; */
+  margin: 0 auto;
 }
 
 #customer_content p{
-  margin: 20px 0 20px 0;
+  margin: 20px 0;
   line-height: 35px;
+
 }
 
 #customer_content img{
-  width: 50%;
+  width: 850px;
   margin: 0 auto;
   display: block;
 }

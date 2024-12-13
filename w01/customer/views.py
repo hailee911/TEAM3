@@ -14,7 +14,8 @@ def main(request):
 def noticelist(request):
   # 프로필 가져오기 
   mem = Member.objects.filter(id = request.session['session_id'])
-  qs = NoticeBoard.objects.all().order_by('-bno')
+
+  qs = NoticeBoard.objects.filter(category=1).order_by('-bno')
   context = {'notice_list':qs, 'mem_info':mem[0]}
   return render(request, 'customer_notice_list.html', context)
 
