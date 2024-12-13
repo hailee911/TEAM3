@@ -22,14 +22,43 @@
 
 
   <script>
-    $(function () {
+
+    $(function() {
       // GNB 클릭
-      $("#menu ul li").on("click", function () {
-        $("#menu ul li").removeClass("active");
-        $(this).addClass("active");
+      $('#menu ul li').on('click', function() {
+        $('#menu ul li').removeClass('active');
+        $(this).addClass('active');
+      });
+  
+      // 검색창
+      $('#searchBtn').click(function(){
+          $("#main_search").removeClass('closed').addClass('open');
+          $('#s_overlay').addClass('show');
+        });
+      $('#search_closeBtn').click(function(){
+        $("#main_search").removeClass('open').addClass('closed');
+        $('#s_overlay').removeClass('show');
+      });
+      $('#s_overlay').click(function() { //배경 클릭하면 닫히게
+        $('#main_search').removeClass('open').addClass('closed');
+        $('#s_overlay').removeClass('show');
+      });
+  
+  
+      // 알림창
+      $('#notiBtn').click(function() {
+        $('#noti_side').removeClass('closed').addClass('open');
+        $('#n_overlay').addClass('show');
+      });
+      $('#noti_closeBtn').click(function() {
+        $('#noti_side').removeClass('open').addClass('closed');
+        $('#n_overlay').removeClass('show');
+      });
+      $('#n_overlay').click(function() { //배경 클릭하면 닫히게
+        $('#noti_side').removeClass('open').addClass('closed');
+        $('#n_overlay').removeClass('show');
       });
     });
-
 
     document.addEventListener('DOMContentLoaded', () => {
       const toggleButton1 = document.getElementById('toggleButton1');
@@ -121,13 +150,9 @@
   <div id="top_nav">
     <h1><a href="#"></a></h1>
     <ul class="top_menu">
-      <li>
-        <a href="#"><img src="{% static 'images/family1/search_icon.png'%}" alt="" /></a>
-      </li>
-      <li>
-        <a href="#"><img src="{% static 'images/family1/bell_off_icon.png'%}" alt="" /></a>
-      </li>
-      <li><a href="#">마이페이지</a></li>
+      <li><a id="searchBtn"><img src="{% static 'images/family1/search_icon.png'%}" alt="" /></a></li>
+      <li><a id="notiBtn"><img src="{% static 'images/family1/bell_off_icon.png'%}" alt="" /></a></li>
+      <li><a href="/mypage/main/">마이페이지</a></li>
     </ul>
   </div>
 
@@ -145,24 +170,12 @@
     <!-- Nav -->
     <nav id="menu">
       <ul>
-        <a href="#">
-          <li class="menu_item">우리 가족 이야기</li>
-        </a>
-        <a href="#">
-          <li class="menu_item">다이어리</li>
-        </a>
-        <a href="#">
-          <li class="menu_item">감정 돌아보기</li>
-        </a>
-        <a href="#">
-          <li class="menu_item active">우리가족</li>
-        </a>
-        <a href="#">
-          <li class="menu_item">캘린더</li>
-        </a>
-        <a href="#">
-          <li class="menu_item">알려드려요</li>
-        </a>
+        <a href="#"><li class="menu_item">우리 가족 이야기</li></a>
+        <a href="#"><li class="menu_item">다이어리</li></a>
+        <a href="#"><li class="menu_item">감정 돌아보기</li></a>
+        <a href="#"><li class="menu_item active">우리가족</li></a>
+        <a href="#"><li class="menu_item">캘린더</li></a>
+        <a href="#"><li class="menu_item">알려드려요</li></a>
       </ul>
     </nav>
 
@@ -296,6 +309,43 @@
   <div></div>
 
   <!-- footer -->
+  <div id="footer">
+		<div id="f_logo_wrap">
+			<img src="/static/images/home/logo_white_sample.png" alt="">
+		</div>
+		<div id="f_link">
+			<ul>
+				<li><a href="">공지사항 보기</a></li>
+				<li>|</li>
+				<li><a href="">포스트 보기</a></li>
+				<li>|</li>
+				<li><a href="">개인정보처리방침</a></li>
+				<li>|</li>
+				<li><a href="/admin1/login/">관리자페이지(임시링크)</a></li>
+			</ul>
+		</div>
+		<div id="f_txt">
+			<ul>
+				<li>상호 : (주)프로젝트파이터</li>
+				<li>|</li>
+				<li>대표자 : 홍길동</li>
+				<li>|</li>
+				<li>개인정보보호책임 : 유관순</li>
+			</ul>
+			<ul>	
+				<li>사업자등록번호 : 123-45-67890</li>
+				<li>|</li>
+				<li>통신판매업신고번호 : 제1234-서울금천-5678호</li>
+			</ul>
+			<ul>	
+				<li>주소 : 서울 금천구 가산디지털2로 101 한라원앤원타워 B동 3층</li>
+				<li>|</li>
+				<li>고객센터 : 02-1234-5678</li>
+			</ul>
+			
+		</div>
+	</div>
+
 </body>
 
 </html>
