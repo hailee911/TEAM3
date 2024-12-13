@@ -85,7 +85,7 @@
       
       // "더보기" 버튼 표시 여부 처리 (small_list_2)
       if (smallItems2.length <= 4) {
-        toggleButton2.style.display = 'none';
+        smallToggle2.style.display = 'none';
       }
       
       // "더보기" 버튼 클릭 시 동작 (small_list_2)
@@ -103,6 +103,8 @@
     
       editButton.addEventListener('click', () => {
         const isEditing = editButton.classList.contains('editing');
+        const smallToggle1 = document.getElementById('small_toggle_id1');
+        const addInput = document.getElementById('add_Btn_input');
         if (isEditing) {
           // 편집 모드 -> 완료 모드
           editButton.textContent = '완료';
@@ -117,7 +119,15 @@
           editButton.style.textDecoration = '';
           deleteButtons1.forEach(button => button.style.display = 'none');
           addButtonToggle.style.display = 'none';
+          addInput.style.display = 'none'; // display 속성을 block으로 변경
         }
+
+        // 맴버 추가하기 인풋 등장
+        const addButton = document.getElementById('add_Bton');
+        addButton.addEventListener('click', () => {
+          addInput.style.display = 'block'; // display 속성을 block으로 변경
+        });
+
         // 편집 상태 토글
         editButton.classList.toggle('editing');
       });
@@ -221,16 +231,28 @@
               <button type=button class="list_deleteBtn">삭제</button>
             </div>
           </div>
+          <div class="small_list_1">
+            <div class="small_img"><img src="{% static 'images/family1/default_profile.png'%}" alt="" /></div>
+            <div class="summ">
+              <div class="small_name">홍길동</div>
+              <div class="small_bir">1999-01-09</div>
+              <button type=button class="list_deleteBtn">삭제</button>
+            </div>
+          </div>
+
 
 
           
 
         </div>
-        <div class="small_toggle" id='small_toggle_id1'>
-          <button id="toggleButton1">더보기</button>
+        <div id="add_Btn_input">
+          <input type="text" id="add_input" placeholder="  추가할 맴버의 아이디를 검색하세요.">
         </div>
         <div id="add_Btn_toggle">
           <button type="button" id="add_Bton">맴버추가하기</button>
+        </div>
+        <div class="small_toggle" id='small_toggle_id1'>
+          <button id="toggleButton1">더보기</button>
         </div>
 
 
@@ -277,6 +299,7 @@
               <div class="small_bir">1999-01-09</div>
             </div>
           </div>
+
 
           
           
