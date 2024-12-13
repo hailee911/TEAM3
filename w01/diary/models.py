@@ -1,5 +1,6 @@
 from django.db import models
 from loginpage.models import Member
+from django.core.exceptions import ValidationError
 
     
 # 개인 다이어리 테이블
@@ -40,6 +41,12 @@ class GroupDiary(models.Model):
   
   def __str__(self):
     return f"{self.gno},{self.member.id},{self.gtitle},{self.gName},{self.created_at}"
+
+  def clean(self):
+    # 같은 사용자가 이미 그룹 다이어리를 생성한 경우 ValidationError 발생
+    if GroupDiary.objects.filter(member=self.member).exists():
+        raise ValidationError("이미 그룹 다이어리가 존재합니다.")
+
 
 # 다이어리 작성 -> 내용 db
 from django.utils import timezone
