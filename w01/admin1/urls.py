@@ -46,6 +46,8 @@ urlpatterns = [
 	# 포스트 삭제(여러개 동시 삭제)
     # path('admin_postsDelete/', views.admin_postsDelete, name="admin_notiDelete"),
 
+    # 1:1 문의리스트
+    path('admin_qList/', views.admin_qList, name="admin_qList"),
 
 	# 유저상세정보페이지
     path('admin_memView/<str:id>/', views.admin_memView, name="admin_memView"),

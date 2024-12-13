@@ -306,3 +306,7 @@ def admin_postDelete(request, bno):
 	context = {'dmsg':bno}
 	return render(request, 'admin_postList.html', context)
 
+
+# 1:1 리스트
+def admin_qList(request):
+	return render(request, 'admin_qList.html')

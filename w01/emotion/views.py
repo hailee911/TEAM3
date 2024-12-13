@@ -12,7 +12,22 @@ from emotion.models import EmotionScore
 def main(request):
   # 프로필 가져오기 
   mem = Member.objects.filter(id = request.session['session_id'])
-  context = {'mem_info':mem[0]}
+  
+  # 날짜 가져오기
+  current_date = datetime.today()
+  year = current_date.year
+  month = current_date.month
+
+  # 주 수 가져오기
+  # 현재 날짜가 속한 달의 첫 번째 날 (12월 1일)
+  first_day_of_month = current_date.replace(day=1)
+  # 오늘 날짜와 첫 번째 날 사이의 일수를 계산
+  days_into_month = (current_date - first_day_of_month).days
+
+  # 주 수 계산
+  week_number = (days_into_month // 7) + 1
+
+  context = {'mem_info':mem[0], 'year':year, 'month':month, 'week':week_number}
   return render(request, 'e_main.html', context)
 
 def main_data1(request):
@@ -72,12 +87,12 @@ def main_data2(request):
         month = current_date.month
         weekday = current_date.weekday()  # 월요일은 0, 일요일은 6
 
-        # 오늘 날짜가 속한 주의 월요일 구하기
-        days_to_monday = weekday  # 오늘이 월요일이라면 0, 화요일이면 1 ...
-        monday_date = current_date - timedelta(days=days_to_monday)  # 오늘에서 weekday만큼 빼면 월요일
-
-        # 일요일 구하기
+        # 오늘 날짜가 속한 주의 월요일과 일요일 구하기
+        monday_date = current_date - timedelta(days=weekday)  # 오늘에서 weekday만큼 빼면 월요일
         sunday_date = monday_date + timedelta(days=6)
+
+        # 월요일부터 일요일까지의 날짜 목록 생성
+        week_dates = [monday_date + timedelta(days=i) for i in range(7)]
 
         # 프로필 가져오기
         id = Member.objects.get(id=request.session['session_id'])
@@ -91,7 +106,7 @@ def main_data2(request):
             scores_in_week.annotate(
                 day_of_month=Extract('diarydate', 'day'),  # 일(day)만 추출
             )
-            .values('day_of_month')  # 일(day) 기준으로 그룹화, 요일(weekday)도 포함
+            .values('day_of_month')  # 일(day) 기준으로 그룹화
             .annotate(
                 total_value=Sum('emotionscore'),  # 합계 계산
                 count=Count('emotionscore')  # 개수 계산
@@ -99,21 +114,36 @@ def main_data2(request):
             .order_by('day_of_month')  # 날짜 순으로 정렬
         )
 
+        # 날짜별로 데이터 매핑
+        grouped_data_dict = {
+            item['day_of_month']: {
+                "total_value": item['total_value'],
+                "count": item['count']
+            }
+            for item in grouped_data
+        }
+
         # 요일 이름 리스트
         weekdays = ["월", "화", "수", "목", "금", "토", "일"]
 
         # 결과 처리
         data = []
-        for item in grouped_data:
-            # 요일 계산 (item['day_of_month']에서 해당 날짜를 가져온 후 요일 계산)
-            date = datetime(year, month, item['day_of_month'])
+        for date in week_dates:
+            day_of_month = date.day
             weekday_name = weekdays[date.weekday()]  # 0=월, 6=일
-            # 평균값 계산
-            average_value = round(item['total_value'] / item['count'], 2) if item['count'] > 0 else 0
+
+            # 데이터가 존재하면 평균 계산, 없으면 0으로 초기화
+            if day_of_month in grouped_data_dict:
+                total_value = grouped_data_dict[day_of_month]['total_value']
+                count = grouped_data_dict[day_of_month]['count']
+                average_value = round(total_value / count, 2) if count > 0 else 0
+            else:
+                average_value = 0
+
             data.append({
-                "name": item['day_of_month'],  # 날짜
+                "name": day_of_month,  # 날짜
                 "label": weekday_name,  # 요일
-                "value": average_value  # 평균값
+                "value": average_value  # 평균값 (없으면 0)
             })
 
         return JsonResponse(data, safe=False)

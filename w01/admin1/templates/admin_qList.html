@@ -91,15 +91,15 @@
 			<a href="/admin1/admin_memList/">회원관리</a>
 			<a href="#">판매관리</a>
 			<a href="/admin1/admin_noticeList/">공지사항</a>
-			<a href="/admin1/admin_postList/" class='active'>포스트</a>
-			<a href="/admin1/admin_qList/" >1:1문의</a>
+			<a href="/admin1/admin_postList/" >포스트</a>
+			<a href="/admin1/admin_qList/" class='active'>1:1문의</a>
 			<a href="/admin1/admin_adminList/">관리자설정</a>
 			<a id='a_logout'>로그아웃</a>
 		</div>
 	</nav>
 	<div class="container">
 		<div class="con_header">
-			<h2>포스트</h2>
+			<h2>1:1문의</h2>
 			<button id="postAddBtn" type="button">포스트 추가</button>
 			<button id="dBtn" type="button">포스트 삭제</button>
 		</div>
@@ -107,19 +107,21 @@
 			<colgroup>
         <col style="width: 5%;"> <!-- 체크박스 열 -->
         <col style="width: 10%;"> <!-- 번호 열 -->
-        <col style="width: 55%;"> <!-- 제목 열 -->
-        <col style="width: 10%;"> <!-- 작성자 열 -->
-        <col style="width: 10%;"> <!-- 작성일 열 -->
+        <col style="width: 15%;"> <!-- 작성자 열 -->
+        <col style="width: 15%;"> <!-- 문의종류 열 -->
+        <col style="width: 30%;"> <!-- 문의내용 열 -->
+        <col style="width: 15%;"> <!-- 첨부파일 열 -->
         <col style="width: 10%;"> <!-- 게시 상태 열 -->
     	</colgroup>
 			<thead>
 				<tr>
 					<th><input type="checkbox" id="select_all"></th>
 					<th>번호</th>
-					<th>공지제목</th>
 					<th>작성자</th>
-					<th>작성일</th>
-					<th>게시상태</th>
+					<th>문의종류</th>
+					<th>내용</th>
+					<th>첨부파일</th>
+					<th>이메일</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -134,7 +136,7 @@
 				</tr>
 				{% empty %}
     		<tr>
-       	 <td colspan="6" style="text-align: center;">등록된 포스트가 없습니다.</td>
+       	 <td colspan="7" style="text-align: center;">등록된 문의가 없습니다.</td>
     		</tr>
 				{% endfor %}
 				<!-- 데이터 추가 반복 -->

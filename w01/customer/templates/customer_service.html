@@ -19,6 +19,19 @@
     <p id="uName" >{{mem_info.name}}</p>
     <p id="uEmail">{{mem_info.mail}}</p>
   </div>
+
+  	<!-- Nav -->
+		<nav id="menu">
+			<ul>
+				<a href="/main/index/"><li class="menu_item">우리 가족 이야기</li></a>
+				<a href="/diary/diaryHome/"><li class="menu_item">다이어리</li></a>
+				<a href="/emotion/main/"><li class="menu_item">감정 돌아보기</li></a>
+				<a href="/family1/fam/"><li class="menu_item">우리가족</li></a>
+				<a href="/calendar1/cal/"><li class="menu_item">캘린더</li></a>
+				<a href="/customer/"><li class="menu_item active">알려드려요</li></a>
+			</ul>
+		</nav>
+
   {% endblock profill-block%}
 
   {% block container-block%}
@@ -124,20 +137,22 @@
         </div>
       </div>
     </div>
-    <div id="customer_service_request">
-      <span>1:1 문의</span>
-      <div class="customer_service_request_box">
-        <div class="customer_service_request_input">
-          <input type="text" placeholder="문의 종류">
-          <textarea name="" id="" placeholder="내용"></textarea>
-          <input type="file" name="request_file" id="request_file">
-          <input type="text" placeholder="답변 받을 이메일">
-        </div>
-        <div class="customer_service_request_agree">
-          <p>문의 및 요청사항에 대한 서비스 지원을 위한 개인정보 수집, 이용동의(필수)</p>
-          <div class="agree_txt">
-            1. 개인정보의 수집 및 이용 목적<br>
-            문의 및 요청사항에 대한 서비스를 지원하기 위해 개인정보를 수집하고 있으며, 수집된 개인정보는 정해진 목적 이외의 용도로는 이용되지 않으며 수집 목적이 변경될 경우 사전에 알리고 동의를 받을 예정입니다.<br>
+    <form action="/customer/" method='post' name='requFrm'>
+      {% csrf_token %}
+      <div id="customer_service_request">
+        <span>1:1 문의</span>
+        <div class="customer_service_request_box">
+          <div class="customer_service_request_input">
+            <input type="text" name='requ_title'placeholder="문의 종류">
+            <textarea name="requ_content" id="" placeholder="내용"></textarea>
+            <input type="file" name="request_file" id="request_file">
+            <input type="text" name='requ_mail' placeholder="답변 받을 이메일">
+          </div>
+          <div class="customer_service_request_agree">
+            <p>문의 및 요청사항에 대한 서비스 지원을 위한 개인정보 수집, 이용동의(필수)</p>
+            <div class="agree_txt">
+              1. 개인정보의 수집 및 이용 목적<br>
+              문의 및 요청사항에 대한 서비스를 지원하기 위해 개인정보를 수집하고 있으며, 수집된 개인정보는 정해진 목적 이외의 용도로는 이용되지 않으며 수집 목적이 변경될 경우 사전에 알리고 동의를 받을 예정입니다.<br>
             2. 개인정보의 보유 및 이용기간<br>
             원칙적으로 개인정보의 수집목적 또는 제공받은 목적이 달성된 때에는 귀하의 개인정보를 지체 없이 파기합니다. 다만 발송내역의 자료를 확인하기 위해 1년간 보유합니다. 다른 법령에 따라 보존하여야 하는 경우에는 보유 및 이용기간이 경과한 개인정보를 파기하지 아니하고 보유할 수 있습니다.<br>
             3. 수집하는 개인정보의 항목<br>
@@ -151,14 +166,26 @@
           <div class="agree_chk">
             <input type="radio" value='agree' id='agree'>
             <label for="agree"> 개인 정보 수집 및 이용에 동의합니다.</label>
-            <button type="button">문의 등록</button>
+            <button type="button" class='requBtn'>문의 등록</button>
           </div>
         </div>
       </div> 
+    </form>
     </div>
   </div>
 
   <script>
+    // 문의 등록 버튼 클릭
+    $(document).ready(function() {
+      $('.requBtn').click(function() {
+        if ($('#agree').is(':checked')) {
+          alert('문의가 등록되었습니다.')
+          requFrm.submit();
+        } else {
+            alert("개인 정보 수집 및 이용에 동의해 주세요.");
+        }
+      });
+    });
     // 가족과 친해지는 방법 슬라이드
     document.addEventListener('DOMContentLoaded', function() {
       const wrapper = document.querySelector('.how_dairy'); // 슬라이더 컨테이너

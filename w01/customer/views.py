@@ -4,11 +4,22 @@ from loginpage.models import Member
 
 # Create your views here.
 def main(request):
-  # 프로필 가져오기 
-  mem = Member.objects.filter(id = request.session['session_id'])
+  if request.method == 'GET':
+    # 프로필 가져오기 
+    mem = Member.objects.filter(id = request.session['session_id'])
+    qs = NoticeBoard.objects.order_by('-bno')[:5]
+    context = {'notice_5':qs, 'mem_info':mem[0]}
 
-  qs = NoticeBoard.objects.order_by('-bno')[:5]
-  context = {'notice_5':qs, 'mem_info':mem[0]}
+  # 1:1 문의 작성하기 버튼 눌렀을 때
+  else:
+    mem = Member.objects.filter(id = request.session['session_id'])
+    requ_title = request.POST.get('requ_title')
+    requ_content = request.POST.get('requ_content')
+    request_file = request.FILES.get('request_file')
+    requ_mail = request.POST.get('requ_mail')
+    NoticeBoard.objects.create(btitle=requ_title, bcontent=requ_content, bfile=request_file, bmail=requ_mail, category=3)
+    
+    context = {'qmsg':1}
   return render(request, 'customer_service.html', context)
 
 def noticelist(request):
