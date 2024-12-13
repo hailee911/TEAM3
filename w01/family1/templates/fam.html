@@ -21,37 +21,40 @@
         $('#menu ul li').removeClass('active');
         $(this).addClass('active');
       });
-  
-      // 검색창
-      $('#searchBtn').click(function(){
-          $("#main_search").removeClass('closed').addClass('open');
-          $('#s_overlay').addClass('show');
-        });
-      $('#search_closeBtn').click(function(){
+    
+      // 검색창 열기
+      $('#searchBtn').click(function() {
+        $("#main_search").removeClass('closed').addClass('open');
+        $('#s_overlay').addClass('show');
+      });
+      // 검색창 닫기
+      $('#search_closeBtn').click(function() {
         $("#main_search").removeClass('open').addClass('closed');
         $('#s_overlay').removeClass('show');
       });
-      $('#s_overlay').click(function() { //배경 클릭하면 닫히게
+      // 배경 클릭 시 검색창 닫기
+      $('#s_overlay').click(function() {
         $('#main_search').removeClass('open').addClass('closed');
         $('#s_overlay').removeClass('show');
       });
-  
-  
-      // 알림창
+    
+      // 알림창 열기
       $('#notiBtn').click(function() {
         $('#noti_side').removeClass('closed').addClass('open');
         $('#n_overlay').addClass('show');
       });
+      // 알림창 닫기
       $('#noti_closeBtn').click(function() {
         $('#noti_side').removeClass('open').addClass('closed');
         $('#n_overlay').removeClass('show');
       });
-      $('#n_overlay').click(function() { //배경 클릭하면 닫히게
+      // 배경 클릭 시 알림창 닫기
+      $('#n_overlay').click(function() {
         $('#noti_side').removeClass('open').addClass('closed');
         $('#n_overlay').removeClass('show');
       });
     });
-
+    
     document.addEventListener('DOMContentLoaded', () => {
       const toggleButton1 = document.getElementById('toggleButton1');
       const mainMe = document.getElementById('main_me');
@@ -60,18 +63,12 @@
       const smallToggle1 = document.getElementById('small_toggle_id1');
       const smallToggle2 = document.getElementById('small_toggle_id2');
       
-      // small_list_1이 4개 이하일 경우 "더보기" 버튼 숨기기
-      if (smallItems1.length <= 4) {
-        smallToggle1.style.display = 'none';
-      } else {
-        smallToggle1.style.display = 'block';
-      }
-      // small_list_1이 4개 이하일 경우 "더보기" 버튼 숨기기
-      if (smallToggle2.length <= 4) {
-        smallToggle2.style.display = 'none';
-      } else {
-        smallToggle2.style.display = 'block';
-      }
+      // "더보기" 버튼의 표시 여부 처리
+      const toggleMoreButtonVisibility = (items, toggle) => {
+        toggle.style.display = items.length <= 4 ? 'none' : 'block';
+      };
+      toggleMoreButtonVisibility(smallItems1, smallToggle1);
+      toggleMoreButtonVisibility(smallItems1, smallToggle2);
       
       // "더보기" 버튼 클릭 시 동작
       toggleButton1.addEventListener('click', () => {
@@ -86,12 +83,12 @@
       const smallList2 = document.getElementById('small_list2');
       const smallItems2 = smallList2.querySelectorAll('.small_list_2');
       
-      // small_list_2가 4개 이하일 경우 "더보기" 버튼 숨기기
+      // "더보기" 버튼 표시 여부 처리 (small_list_2)
       if (smallItems2.length <= 4) {
         toggleButton2.style.display = 'none';
       }
       
-      // "더보기" 버튼 클릭 시 동작
+      // "더보기" 버튼 클릭 시 동작 (small_list_2)
       toggleButton2.addEventListener('click', () => {
         const expanded = mainMe2.classList.toggle('expanded');
         smallList2.classList.toggle('expanded');
@@ -101,38 +98,31 @@
     
       // 편집 버튼 클릭 시 스타일 변경 및 텍스트 변경
       const editButton = document.getElementById('king');
-      const deleteButtons1 = document.querySelectorAll('.list_deleteBtn'); // 첫 번째 목록 삭제 버튼들
-      const addButtonToggle = document.getElementById('add_Btn_toggle'); // '맴버추가하기' 버튼
-      
+      const deleteButtons1 = document.querySelectorAll('.list_deleteBtn');
+      const addButtonToggle = document.getElementById('add_Btn_toggle');
+    
       editButton.addEventListener('click', () => {
         const isEditing = editButton.classList.contains('editing');
         if (isEditing) {
-          // 완료 버튼으로 변경
+          // 편집 모드 -> 완료 모드
           editButton.textContent = '완료';
           editButton.style.color = 'blue';
           editButton.style.textDecoration = 'underline';
-          
-          // 삭제 버튼 보이기
           deleteButtons1.forEach(button => button.style.display = 'inline-block');
-          
-          // '맴버추가하기' 버튼 보이기
           addButtonToggle.style.display = 'block';
         } else {
-          // 편집 버튼으로 변경
+          // 완료 모드 -> 편집 모드
           editButton.textContent = '편집';
           editButton.style.color = '';
           editButton.style.textDecoration = '';
-          
-          // 삭제 버튼 숨기기
           deleteButtons1.forEach(button => button.style.display = 'none');
-          
-          // '맴버추가하기' 버튼 숨기기
           addButtonToggle.style.display = 'none';
         }
-        // 상태 토글
+        // 편집 상태 토글
         editButton.classList.toggle('editing');
       });
     });
+    
 
   </script>
 </head>
