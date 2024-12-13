@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="{% static '/css/calendar1/main.css'%}" />
+
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+
+  <!-- full calendar -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+  <title>캘린더</title>
+  <script>
+    $(function () {
+      // GNB 클릭
+      $("#menu ul li").on("click", function () {
+        $("#menu ul li").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <!-- 최상단 메뉴 -->
+  <div id="top_nav">
+    <h1><a href="#"></a></h1>
+    <ul class="top_menu">
+      <li>
+        <a href="#"><img src="{% static '/images/calendar1/search_icon.png'%}" alt="" /></a>
+      </li>
+      <li>
+        <a href="#"><img src="{% static '/images/calendar1/bell_off_icon.png'%}" alt="" /></a>
+      </li>
+      <li><a href="#">마이페이지</a></li>
+    </ul>
+  </div>
+
+  <!-- 좌측 gnb -->
+  <div id="gnb">
+    <!-- 프로필 -->
+    <div id="user_profile">
+      <div id="pimg">
+        <img src="{% static '/images/calendar1/default_profile.png'%}" alt="" />
+      </div>
+      <p id="uName">김용준</p>
+      <p id="uEmail">kyjoon0105@gmail.com</p>
+    </div>
+
+    <!-- Nav -->
+    <nav id="menu">
+      <ul>
+        <a href="#">
+          <li class="menu_item">우리 가족 이야기</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">다이어리</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">감정 돌아보기</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">우리가족</li>
+        </a>
+        <a href="#">
+          <li class="menu_item active">캘린더</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">알려드려요</li>
+        </a>
+      </ul>
+    </nav>
+
+    <!-- logout -->
+    <div id="logout">
+      <a href="#"><span>로그아웃</span></a>
+    </div>
+  </div>
+
+  <!-- container -->
+  <div id="calendar_title">
+    <h1>캘린더</h1>
+    <button id="openModalBtn"></button>
+  </div>
+  <div id='calendar'>
+  </div>
+
+  <!-- modal -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <div class="modal_head">
+          <button type="button" id="closeModalBtn" class="closemodalBtn"></button>
+          <button type="submit" id="chechkModalBtn"></button>
+          <h2>일정 추가</h2>
+        </div>
+        
+        <label for="eventTitle">제목</label>
+        <input class="Modal_input" type="text" id="eventTitle" name="title" placeholder="이벤트 제목을 입력하세요" /><br>
+        
+        <label for="eventColor">색상</label>
+        <input class="Modal_input" type="color" id="eventColor" name="color" /><br>
+
+        <label for="startTime">시작</label>
+        <input class="Modal_input" type="datetime-local" id="startTime" name="start_date" /><br>
+        
+        <label for="endTime">종료</label>
+        <input class="Modal_input" type="datetime-local" id="endTime" name="end_date" /><br>
+        
+        <label for="eventlocation">장소</label>
+        <input class="Modal_input" type="text" id="eventlocation" name="location"/><br>
+        
+        <label for="repeat">반복</label>
+        <select class="Modal_input" id="repeat" name="repeat"><br>
+          <option value="none">없음</option>
+          <option value="daily">매일</option>   
+          <option value="weekly">매주</option>
+          <option value="monthly">매월</option>
+          <option value="monthly">매년</option>
+        </select><br>
+        
+        <label for="notes">메모</label>
+        <textarea class="Modal_input" id="notes" name="memo" rows="2" placeholder="메모를 작성하세요"></textarea><br>
+      </form>
+    </div>
+  </div>
+
+  <div id="disModal" class="modal">
+    <div class="modal-content">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="modal_head">
+          <button type="button" id="closeModalBtn2" class="closemodalBtn"></button>
+          <h2>일정 추가</h2>
+        </div>
+        <input type="hidden" id='eventNo' name="no" >
+        <label for="eventTitle">제목</label>
+        <input class="Modal_input" type="text" id="eventTitle1" name="title1" placeholder="이벤트 제목을 입력하세요" /><br>
+        
+        <label for="eventColor1">색상</label>
+        <input class="Modal_input" type="color" id="eventColor1" name="color1" /><br>
+
+        <label for="startTime">시작</label>
+        <input class="Modal_input" type="datetime-local" id="startTime1" name="start_date1" /><br>
+        
+        <label for="endTime">종료</label>
+        <input class="Modal_input" type="datetime-local" id="endTime1" name="end_date1" /><br>
+        
+        <label for="eventlocation">장소</label>
+        <input class="Modal_input" type="text" id="eventlocation1" name="location1"/><br>
+        
+        <label for="repeat">반복</label>
+        <select class="Modal_input" id="repeat1" name="repeat1"><br>
+          <option value="none">없음</option>
+          <option value="daily">매일</option>   
+          <option value="weekly">매주</option>
+          <option value="monthly">매월</option>
+          <option value="monthly">매년</option>
+        </select><br>
+        
+        <label for="notes">메모</label>
+        <textarea class="Modal_input" id="notes1" name="memo1" rows="2" placeholder="메모를 작성하세요"></textarea><br>
+        <div id="deleteBtn">
+          <button type="button" id="updateEventBtn"></button>
+          <button type="button" id="deleteEventBtn"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="{% static '/js/calendar1/calendar.js'%}"></script>
+</body>
+
+</html>
