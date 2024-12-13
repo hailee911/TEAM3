@@ -11,13 +11,15 @@
   <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
   <title>다이어리 HOME</title>
 </head>
-
 <!-- 공통 상단좌측메뉴 -->
 <script>
   if("{{gmsg}}"=='1'){
     alert("가족 다이어리가 만들어졌어요.")
     location.href = '/diary/diaryHome/'
   }
+
+
+
   $(function() {
     // GNB 클릭
     $('#menu ul li').on('click', function() {
@@ -36,12 +38,9 @@
     <li><a href="#"><img src="/static/images/home/bell_off_icon.png" alt=""></a></li>
     <li><a href="#">마이페이지</a></li>
   </ul>
-
 </div>
-
 <!-- 좌측 gnb -->
 <div id="gnb">
-
   <!-- 프로필 -->
   <div id="user_profile">
     <div id="pimg">
@@ -50,7 +49,6 @@
     <p id="uName">김용준</p>
     <p id="uEmail">kyjoon0105@gmail.com</p>
   </div>
-
   <!-- Nav -->
   <nav id="menu">
     <ul>
@@ -62,63 +60,72 @@
       <a href="#"><li class="menu_item">알려드려요</li></a>
     </ul>
   </nav>
-
   <!-- logout -->
   <div id="logout">
     <a href="#"><span>로그아웃</span></a>
   </div>
-  
 </div>
 <!-- 공통 상단좌측메뉴 -->
-
-
 <!-- 다이어리 HOME -->
 <div id="all_area">
   <!-- 상단부분 -->
   <div id="title_area">
     <p id="topTit">다이어리<span id="searchBar"><input type="text" name="search" placeholder="검색"></span>
-    <span><a href="/diary/diaryMake/"><button id="plusBtn"><img src="/static/images/diary/plusBtn.png" alt=""></button></a></span></p>      
+    <span><a href="/diary/diaryMake/"><button id="plusBtn"><img src="/static/images/diary/plusBtn.png" alt=""></button></a></span></p>
   </div>
-
   <!-- 메인부분 -->
   <div id="main_area">
-
   <button class="prev-btn"><img src="/static/images/diary/Arrow_drop_left.png" alt=""></button>
   <div class="carousel">
     <div class="image-container">
-
       <div class="card" id="firstCard"><a href="/diary/FdiaryList/"><img src="/static/images/diary/diary.png" alt="">
         <div id="dFirst_area">
           <div class="diary_group">
-            <p>Family Dairy</p>
+            <p>Family Diary</p>
           </div>
           <div class="diary_title">
-            <p>우리 가족 일기를<br> 추가해 주세요.</p>
+            {% if createdDiary %}
+            <p>{{ createdDiary.gtitle }}</p>
+            {% else %}
+            <p>우리 가족 일기를 만들어보세요.</p>
+            {% endif %}
           </div>
         </div>
         <div class="diary_member">
-          <p>김용준{{member.name}}</p>
+          {% if createdDiary %}
+          <p>
+            {{ request.session.session_id }}
+            {% for cmember in cmembers %}
+            , {{ cmember.name }}
+            {% endfor %}
+            {% else %}
+            가족을 초대해 보세요.
+          </p>
+          {% endif %}
         </div>
         <div class="diary_date">
-          <p>2023.12.04 ~</p>
+          {% if createdDiary %}
+          <p>{{ createdDiary.created_at|date:"Y.m.d" }} ~</p>
+          {% else %}
+          <p></p>
+          {% endif %}
         </div>
       </a></div>
 
       <div class="card" id="secondCard"><a href="/diary/MdiaryList/"><img src="/static/images/diary/diary.png" alt="">
-      <div class="card"><a href="/diary/MdiaryList/"><img src="/static/images/diary/diary.png" alt="">
         <div id="dFirst_area">
           <div class="diary_group">
             <p>My Dairy</p>
           </div>
           <div class="diary_title">
-            <p>내 다이어리 이름을<br> 설정해 주세요.</p>
+            <p>내가 한 말을<br> 내가 오해하지 않기로 함</p>
           </div>
         </div>
         <div class="diary_member">
-          <p>김용준{{member.name}}</p>
+          <p>김용준</p>
         </div>
         <div class="diary_date">
-          <p>2023.09.28 ~{{member.mdate}}</p>
+          <p>2023.09.28 ~</p>
         </div>
       </a></div>
 
@@ -128,34 +135,32 @@
             <p>Family Dairy</p>
           </div>
           <div class="diary_title">
-            <p>우리 가족 일기를<br> 추가해 주세요.</p>
+            {% if joinedDiary %}
+            <p>{{ joinedDiary.gtitle }}</p>
+            {% else %}
+            <p>가족에게 다이어리 초대를 받아보세요.</p>
+            {% endif %}
           </div>
         </div>
         <div class="diary_member">
-          <p>김용준{{member.name}}</p>
+          <p>
+            {% if joinedDiary %}
+            {{ request.session.session_id }}
+            , {{ jmem.name }}
+            {% for jmember in jmembers %}
+            , {{ jmember.name }}
+            {% endfor %}
+            {% else %}
+            가족을 초대해 보세요.
+            {% endif %}
+          </p>
         </div>
         <div class="diary_date">
-          <p>2023.12.04 ~{{member.mdate}}</p>
-          <p>2023.12.04 ~</p>
-        </div>
-      </a></div>
-
-      <div class="card"><a href="/diary/MdiaryList/"><img src="/static/images/diary/diary.png" alt="">
-        <div id="dFirst_area">
-          <div class="diary_group">
-            <p>My Dairy</p>
-          </div>
-          <div class="diary_title">
-            <p>내가 한 말을<br> 내가 오해하지 않기로 함</p>
-          </div>
-        </div>
-
-        <div class="diary_member">
-          <p>김용준</p>
-        </div>
-
-        <div class="diary_date">
-          <p>2023.09.28 ~</p>
+          {% if joinedDiary %}
+          <p>{{ joinedDiary.created_at|date:"Y.m.d" }} ~</p>
+          {% else %}
+          <p></p>
+          {% endif %}
         </div>
       </a></div>
 
@@ -163,16 +168,13 @@
   </div>
   <button class="next-btn"><img src="/static/images/diary/Arrow_drop_right.png" alt=""></button>
   </div>
-
   <div id="mailbox_container">
     <!-- 어두운 배경 레이어 -->
     <div id="dark_background"></div>
-
     <!-- 우체통 버튼 -->
     <button id="mailBtn">
       <img id="mailBtn_icon" src="/static/images/diary/mailbox_alert_off.png" alt="">
     </button>
-    
     <!-- 우체통 리스트 -->
     <div id="mailbox_list">
       <div class="list_header">우체통</div>
@@ -187,15 +189,13 @@
           <span class="mail_date">{{letter.ldate|date:'Y.m.d'}}</span>
         </a>
       </li>
-      
       {% comment %} <li data-id="2" class="mail_item"><a href="#">
         <span class="mail_tit">아들아 아빠다. 잘 지내니?</span>
         <span class="mail_date">2024.11.16</span>
       </a>
     </li>
-    
     <li data-id="3" class="mail_item"><a href="#">
-      <span class="mail_tit">오빠~ 생일 축하해! 🎉</span>
+      <span class="mail_tit">오빠~ 생일 축하해! :짠:</span>
       <span class="mail_date">2024.02.23</span>
     </a>
   </li> {% endcomment %}
@@ -206,8 +206,6 @@
       </ul>
     </div>
   </div>
- 
-
   <!-- 편지지 창 -->
   <div class="letter_container" id="letter_container">
     <div class="letter" id="letter">
@@ -219,7 +217,6 @@
         <p><strong>From. 닉네임이 들어가야함..</strong></p>
       </div>
     </div>
-
     {% comment %} <div class="letter" id="letter-2">
       <div class="letter_header">
         <p><strong>To. 아들</strong></p>
@@ -229,18 +226,17 @@
       <div class="letter_footer"><p><strong>From. 엄마</strong></p>
       </div>
     </div>
-
     <div class="letter" id="letter-3">
       <div class="letter_header">
         <p><strong>To. 오빠</strong></p>
       </div>
-      <div class="letter_content"><p>오빠~ 생일 축하해! 🎉</p>
+      <div class="letter_content"><p>오빠~ 생일 축하해! :짠:</p>
       </div>
       <div class="letter_footer"><p><strong>From. 여동생</strong></p>
       </div>
     </div> {% endcomment %}
-
   </div>
+
 
 
   <!-- 스크립트 부분 -->

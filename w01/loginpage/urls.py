@@ -17,5 +17,4 @@ urlpatterns = [
     path('join02/', views.join02,name="join02"),
     path('join03/<str:id>/<str:pw>/<str:mail>/', views.join03,name="join03"),
     path('join04/', views.join04,name="join04"),
-    path('test/', views.test,name="test"),
 ]
