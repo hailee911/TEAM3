@@ -72,7 +72,7 @@
   <div id="title_area">
     
     <p id="infoTit">내 다이어리 이름을 설정해 주세요.{{MdiaryList.diarytit}}
-      <span><a href="/diary/diaryView/"><button type="button" class="wBtn"><img src="/static/images/diary/writeBtn.png" alt=""></button></a></span>
+      <span><a href="/diary/diaryWrite/"><button type="button" class="wBtn"><img src="/static/images/diary/writeBtn.png" alt=""></button></a></span>
       <span><div id="modify_del_slide_1">
         <button type="button" id="addBtn">
         <img src="/static/images/customer/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;">
@@ -95,7 +95,7 @@
     {% if content %}
     {% for c in content %}
     <div class="list_group">
-      <a href="#">
+      <a href="/diary/diaryView/">
         <div class="wrap_cont">
           <span class="tit_post"><span class="num_txt">{{c.cno}}</span>{{c.ctitle}}<span class="img"><img src="/static/images/diary/lock.png" alt=""></span></span>
           <p class="desc_cont">
