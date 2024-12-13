@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
-from django.shortcuts import render,redirect
 from loginpage.models import Member
 from diary.models import Letter
-from loginpage.models import Member
 from django.utils import timezone
 from diary.models import Content
 from diary.models import GroupDiary
