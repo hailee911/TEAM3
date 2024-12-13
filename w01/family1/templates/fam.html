@@ -92,7 +92,7 @@
       toggleButton2.addEventListener('click', () => {
         const expanded = mainMe2.classList.toggle('expanded');
         smallList2.classList.toggle('expanded');
-        mainMe2.style.height = expanded ? `${smallList2.scrollHeight + 170}px` : '400px';
+        mainMe2.style.height = expanded ? `${smallList2.scrollHeight + 170}px` : '420px';
         toggleButton2.textContent = expanded ? '접기' : '더보기';
       });
     
@@ -182,11 +182,11 @@
     <h1>우리가족</h1>
     <div id="top_name">가족구성원</div>
     <div id='main_tool'>
-      <div id="non">가족이 존재하지 않습니다. 가족을 추가하세요.</div>
-      
-      <div id="main_me">
+      <div id="non" class="{% if has_group %}hide{% else %}show{% endif %}">가족이 존재하지 않습니다. 가족을 추가하세요.</div>
 
-        <div id="small_title1" class="small_title">가족그룹이름</div>
+      <div id="main_me" class="{% if created_group %}show{% else %}hide{% endif %}">
+        
+        <div id="small_title1" class="small_title">{{created_group_name}}</div>
         <button type='button' id='king'>편집</button>
 
         <div class="small_list" id="small_list1">
@@ -258,10 +258,9 @@
 
 
       </div>
-      <div id="main_me2">
+      <div id="main_me2" class="{% if joined_group %}show{% else %}hide{% endif %}">
         
-        <div id="small_title1" class="small_title">가족그룹이름</div>
-
+        <div id="small_title1" class="small_title">{{joined_group_name}}</div>
         <div class="small_list" id="small_list2">
 
           <div class="small_list_2">
