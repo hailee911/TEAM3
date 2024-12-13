@@ -8,16 +8,8 @@
   <link rel="stylesheet" as="style" crossorigin
     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="stylesheet" href="{% static '/css/family1/main.css'%}" />
-
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-
-  <!-- full calendar -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
-
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
   <title>우리가족</title>
 
 
@@ -148,7 +140,7 @@
 <body>
   <!-- 최상단 메뉴 -->
   <div id="top_nav">
-    <h1><a href="#"></a></h1>
+    <h1><a href="/"></a></h1>
     <ul class="top_menu">
       <li><a id="searchBtn"><img src="{% static 'images/family1/search_icon.png'%}" alt="" /></a></li>
       <li><a id="notiBtn"><img src="{% static 'images/family1/bell_off_icon.png'%}" alt="" /></a></li>
@@ -171,11 +163,11 @@
     <nav id="menu">
       <ul>
         <a href="#"><li class="menu_item">우리 가족 이야기</li></a>
-        <a href="#"><li class="menu_item">다이어리</li></a>
+        <a href="/diary/diaryHome/"><li class="menu_item">다이어리</li></a>
         <a href="#"><li class="menu_item">감정 돌아보기</li></a>
-        <a href="#"><li class="menu_item active">우리가족</li></a>
-        <a href="#"><li class="menu_item">캘린더</li></a>
-        <a href="#"><li class="menu_item">알려드려요</li></a>
+        <a href="/family1/fam/"><li class="menu_item active">우리가족</li></a>
+        <a href="/calendar1/cal/"><li class="menu_item">캘린더</li></a>
+        <a href="/customer/"><li class="menu_item">알려드려요</li></a>
       </ul>
     </nav>
 
