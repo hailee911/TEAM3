@@ -1,0 +1,263 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+a {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+}
+ol, ul {
+	list-style: none;
+}
+
+#top_nav {
+	width: 100%;
+	height: 60px;
+	background: #fff;
+	border-bottom: 1px solid #E9E9E9;
+	position: fixed;
+	z-index: 2;
+}
+
+#gnb {
+	width: 284px;
+	height: 100%;
+	overflow-y: auto;
+	position: fixed;
+	top : 60px;
+	border-right: 1px solid #E9E9E9;
+	background: #fff;
+	z-index:2;
+}
+
+#user_profile {
+	width: 284px;
+	height: 264px;
+	/* border: 1px solid black; */
+	text-align: center;
+}
+
+#uName{font-size: 18px; font-weight: 500; letter-spacing: 3px; line-height: 21px; margin-top:23px}
+#uEmail{font-size: 14px; font-weight: 400; line-height: 17px; color: #797979; margin-top:9px}
+
+#pimg {
+	width: 100px;
+	height: 100px;
+	/* border: 1px solid black; */
+	border-radius: 100%;
+	overflow: hidden;
+	margin: 40px auto 0;
+}
+
+#pimg img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* 이미지 비율 유지하며 영역 채우기 */
+}
+
+#menu{
+	z-index:2;
+}
+
+#menu ul {
+	list-style: none;
+	padding-left: 0;
+	margin-bottom: 220px;
+}
+
+#menu ul li {
+	height: 44px;
+	padding: 11px 0 11px 40px;
+	margin-bottom: 5px;
+	box-sizing: border-box;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.menu_item {
+	font-size: 16px;
+	font-weight: 400;
+	color: #666;
+}
+
+.menu_item.active {
+	font-size: 16px;
+	font-weight: 600;
+
+	color: #000;
+	background-color: #FAFAFA;
+	background-image: url(../../images/calendar1/menu_bar.png);
+	background-repeat: no-repeat;
+	background-position: right center;
+	
+}
+
+.menu_item:hover {
+	background-color: #FAFAFA;
+	color: #000;
+}
+
+#logout{
+	font-size: 16px;
+	font-weight: 600;
+	margin-left: 40px;
+	background-image: url(../../images/calendar1/logout_icon.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+#logout span{margin-left: 34px;}
+
+
+
+
+#top_nav>h1{ width: 81px; height: 24px; 
+background: url('../../images/calendar1/logo_sample.png') no-repeat;
+position: absolute; 
+left:50px; top:18px; 
+}
+
+.top_menu{
+display: flex;
+gap: 24px;
+justify-content: flex-end;
+margin-right: 48px;
+padding-top: 20px;
+box-sizing: border-box;
+}
+
+
+/* ----- container ----- */
+
+
+#calendar {
+	width: 1400px;
+	height: 1100px;
+	position: relative;
+	top: 150px;
+	left: 390px;
+	z-index: 1; 
+}
+
+#calendar_title>h1 {
+	position: relative;
+	top: 100px;
+	left: 334px;
+	font-size: 22px;
+	font-weight: 400;
+	line-height: 150%;
+}
+
+#openModalBtn{
+	position: relative;
+	top: 194px;
+	left :1625px;
+	width: 40px;
+	height: 40px;
+	background: url('../../images/calendar1/Add_round_light.png') no-repeat;
+	background-size: cover;
+	background-position: center;
+	border: none;
+	cursor: pointer;
+	z-index: 10;
+}
+
+
+/* 모달을 위한 스타일 */
+.modal {
+	display: none; /* 기본적으로 숨김 */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* 배경을 반투명 검은색으로 */
+	justify-content: center;
+	align-items: center;
+	z-index:2;
+}
+
+.modal-content {
+	background-color: white;
+	padding: 10px 20px;
+	border-radius: 8px;
+	text-align: left;
+	width: 300px;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.modal_head {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	justify-content: space-between; /* 버튼을 양쪽 끝으로 배치 */
+	align-items: center; /* 세로 중앙 정렬 */
+	box-sizing: border-box; /* 패딩 포함 박스 모델 */
+}
+
+.modal-content h2 {
+	position: absolute; /* 절대 위치 지정 */
+	left: 50%; /* 수평 가운데 정렬 */
+	transform: translateX(-50%); /* 가운데 정렬을 위한 이동 */
+	margin: 0; /* 기본 여백 제거 */
+	text-align: center;
+}
+
+
+.Modal_input{
+	width: 100%;
+	margin: 10px 0 10px 0;
+}
+
+.closemodalBtn {
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	background-color: #fff;
+	border: none;
+	background-image: url("../../images/calendar1/Close_round_light.png");
+	background-size: cover;
+	background-position: center;
+	cursor: pointer;
+}
+
+#chechkModalBtn {
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	background-color: #fff;
+	border: none;
+	background-image: url("../../images/calendar1/Done_light.png");
+	background-size: cover;
+	background-position: center;
+	cursor: pointer;
+}
+
+#deleteBtn{
+	width: 100%;
+	display: flex;
+}
+
+#updateEventBtn{
+	width: 30px;
+	height: 30px;
+	margin-left: 30%;
+	display: inline-block;
+	background-color: #fff;
+	border: none;
+	background-image: url("../../images/calendar1/Edit_light.png");
+	background-size: cover;
+	background-position: center;
+	cursor: pointer;
+}
+
+#deleteEventBtn{
+	width: 30px;
+	height: 30px;
+	margin-left: 20%;
+	background-color: #fff;
+	border: none;
+	background-image: url("../../images/calendar1/Trash.png");
+	background-size: cover;
+	background-position: center;
+	cursor: pointer;
+}

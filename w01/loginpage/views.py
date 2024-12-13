@@ -42,9 +42,6 @@ def send_verification_email(email, code):
 
 
 
-# 테스트
-def test(request):
-  return render(request,'test.html')
 
 # 회원가입페이지4
 def join04(request):

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from emotion.models import EmotionScore
 
-# Register your models here.
+@admin.register(EmotionScore)
+class EmotionScoreAdmin(admin.ModelAdmin):
+  list_display = ['member','emotionscore']
