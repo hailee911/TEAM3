@@ -8,30 +8,30 @@ from django.utils import timezone
 
 @csrf_exempt
 def update_event(request):
-    if request.method == 'POST':
-        event_id = request.POST.get('event_id')
-        title = request.POST.get('title')
-        color = request.POST.get('color')  # 색상 받아오기
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        location = request.POST.get('location')
-        repeat = request.POST.get('repeat')
-        memo = request.POST.get('memo')
+  if request.method == 'POST':
+    event_id = request.POST.get('event_id')
+    title = request.POST.get('title')
+    color = request.POST.get('color')  # 색상 받아오기
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+    location = request.POST.get('location')
+    repeat = request.POST.get('repeat')
+    memo = request.POST.get('memo')
 
-        try:
-            event = Event.objects.get(no=event_id)  # 이벤트 찾기
-            event.title = title
-            event.color = color,  # 색상 저장
-            event.start_date = start_date
-            event.end_date = end_date
-            event.location = location
-            event.repeat = repeat
-            event.memo = memo
-            event.save()  # 수정된 내용 저장
-            return JsonResponse({'success': True}, status=200)
-        except Event.DoesNotExist:
-            return JsonResponse({'error': '이벤트를 찾을 수 없습니다.'}, status=404)
-    return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
+    try:
+      event = Event.objects.get(no=event_id)  # 이벤트 찾기
+      event.title = title
+      event.color = color,  # 색상 저장
+      event.start_date = start_date
+      event.end_date = end_date
+      event.location = location
+      event.repeat = repeat
+      event.memo = memo
+      event.save()  # 수정된 내용 저장
+      return JsonResponse({'success': True}, status=200)
+    except Event.DoesNotExist:
+      return JsonResponse({'error': '이벤트를 찾을 수 없습니다.'}, status=404)
+  return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
 
 
 
@@ -86,14 +86,14 @@ def cal(request):
 
 @csrf_exempt
 def delete_event(request):
-    if request.method == 'POST':
-        event_id = request.POST.get('event_id')
-        
-        try:
-            event = Event.objects.get(no=event_id)  
-            event.delete()
-            return JsonResponse({'success': True}, status=200)
-        except Event.DoesNotExist:
-            return JsonResponse({'error': '이벤트를 찾을 수 없습니다.'}, status=404)
+  if request.method == 'POST':
+    event_id = request.POST.get('event_id')
+    
+    try:
+      event = Event.objects.get(no=event_id)  
+      event.delete()
+      return JsonResponse({'success': True}, status=200)
+    except Event.DoesNotExist:
+      return JsonResponse({'error': '이벤트를 찾을 수 없습니다.'}, status=404)
 
-    return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
+  return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
