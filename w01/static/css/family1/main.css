@@ -459,19 +459,23 @@ box-sizing: border-box;
 }
 .summ{
 	display: inline-block;
+	align-items: center; 
 	position: relative; 
 	top: -15px;
 	right: 5px;
 }
 .small_name{
+	margin-left: 35px;
+	width: 72px;
+	flex-shrink: 0; /* 크기가 줄어들지 않게 */
 	display: inline-block;
 	font-size: 16px;
-	margin-left: 35px;
 }
 .small_bir{
 	display: inline-block;
 	font-size: 16px;
-	margin-left: 35px;
+	width: 108px;
+	flex-shrink: 0; /* 크기가 줄어들지 않게 */
 }
 .list_deleteBtn{
 	font-size: 16px;
@@ -480,7 +484,6 @@ box-sizing: border-box;
 	background-color: #fff;
 	border: none;
 	cursor: pointer;
-	margin-left: 15px;
 	display: none;
 }
 #toggleButton1 {
