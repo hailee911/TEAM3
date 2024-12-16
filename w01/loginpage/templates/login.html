@@ -39,6 +39,9 @@
         </div>
         <div class="login_error-message" id="login_errorMessage1">아이디를 입력해주세요</div>
         <div class="login_error-message" id="login_errorMessage2">비밀번호를 입력해주세요</div>
+        {% if lmsg %}  
+          <div id="login_errorMessage3">{{ lmsg }}</div>
+        {% endif %}
         <button type="button" id="login_button">로그인</button>
       </form>
       <div class="alternative-login">

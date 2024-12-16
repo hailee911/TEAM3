@@ -14,38 +14,40 @@ login_button.addEventListener('click', () => {
 
   // 첫 번째 입력 필드 확인
   if (id_input.value.trim() === '') {
-    login_errorMessage1.style.display = 'block';
+    loginerrorMessage1.style.display = 'block';
     id_input.focus(); // 첫 번째 입력 필드에 포커스 이동
     isValid = false;
   } else {
-    login_errorMessage1.style.display = 'none';
+    loginerrorMessage1.style.display = 'none';
   }
 
   // 두 번째 입력 필드 확인
   if (pw_input.value.trim() === '') {
     if (id_input.value.trim() != '') {
 
-      login_errorMessage2.style.display = 'block';
+      loginerrorMessage2.style.display = 'block';
       if (isValid) {
         pw_input.focus(); // 첫 번째 입력 필드가 비어있지 않으면 두 번째로 포커스 이동
       }
       isValid = false;
     } else {
-      login_errorMessage2.style.display = 'none';
+      loginerrorMessage2.style.display = 'none';
     }
   }
 
-  // id,pw 일치시 메인화면으로 이동
-  loginFrm.submit()
-
+  
+  // 모든 조건이 충족되면 폼을 제출
+  if (isValid) {
+    loginFrm.submit();
+  }
 });
 
 // 입력 필드에 포커스를 잃었을 때도 확인
 id_input.addEventListener('blur', () => {
   if (id_input.value.trim() === '') {
-    login_errorMessage1.style.display = 'block';
+    loginerrorMessage1.style.display = 'block';
   } else {
-    login_errorMessage1.style.display = 'none';
+    loginerrorMessage1.style.display = 'none';
   }
 });
 
@@ -53,9 +55,17 @@ pw_input.addEventListener('blur', () => {
   if (pw_input.value.trim() === '') {
     if (id_input.value.trim() != '') {
 
-      login_errorMessage2.style.display = 'block';
+      loginerrorMessage2.style.display = 'block';
     } else {
-      login_errorMessage2.style.display = 'none';
+      loginerrorMessage2.style.display = 'none';
     }
+  }
+
+
+});
+document.addEventListener("DOMContentLoaded", function() {
+  const loginErrorMsgElement = document.getElementById('login_errorMessage3');
+  if (loginErrorMsgElement) {
+      loginErrorMsgElement.style.display = 'block';  // 에러 메시지 보이게 설정
   }
 });

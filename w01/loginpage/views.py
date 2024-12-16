@@ -272,25 +272,22 @@ def id(request):
 
 # 로그인페이지
 def login(request):
-  if request.method == "GET":
-    print('확인2')
-    return render(request,'login.html')
-  else:
+  if request.method == "POST":
     id = request.POST.get('id')
     pw = request.POST.get('pw')
-    qs = Member.objects.filter(id=id,pw=pw)
-    mail = qs[0].mail
-    name = qs[0].name
-    print("확인용 :",id)
-
-    if qs:
+    qs = Member.objects.filter(id=id, pw=pw)
+    if qs.exists():  # 로그인 성공
+      mail = qs[0].mail
+      name = qs[0].name
       request.session['session_id'] = id
       request.session['session_mail'] = mail
       request.session['session_name'] = name
-      print("확인일")
-      context = {"lmsg":"1"}
-      return redirect('/index',context)
-    else:
-      context = {'lmsg':"0"}
-      print("확인2")
-      return render(request,'login.html',context)
+      print("2")
+      return redirect('/index')  # 성공 시 리다이렉트
+    else:  # 로그인 실패
+      print("3")
+      context = {'lmsg': "아이디와 비밀번호를 확인해 주세요."}
+      return render(request, 'login.html', context)  # 실패 시 에러 메시지와 함께 템플릿 렌더링
+  else:
+    print("1")
+    return render(request, 'login.html')

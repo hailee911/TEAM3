@@ -20,6 +20,19 @@
     <p id="uName" >{{mem_info.name}}</p>
     <p id="uEmail">{{mem_info.mail}}</p>
   </div>
+
+  	<!-- Nav -->
+		<nav id="menu">
+			<ul>
+				<a href="/main/index/"><li class="menu_item">우리 가족 이야기</li></a>
+				<a href="/diary/diaryHome/"><li class="menu_item">다이어리</li></a>
+				<a href="/emotion/main/"><li class="menu_item active">감정 돌아보기</li></a>
+				<a href="/family1/fam/"><li class="menu_item">우리가족</li></a>
+				<a href="/calendar1/cal/"><li class="menu_item">캘린더</li></a>
+				<a href="/customer/"><li class="menu_item">알려드려요</li></a>
+			</ul>
+		</nav>
+
   {% endblock profill-block%}
   
   {% block container-block%}
@@ -32,13 +45,13 @@
       <div class="emotion_main_graph">
         <div class="emotion_graph_m">
           <div class="graph_r_title">
-            <span>24년 11월</span>
+            <span>{{year}}년 {{month}}월</span>
           </div>
           <div class='emotion_graph_mm'></div>
         </div>
         <div class="emotion_graph_w">
           <div class="graph_r_title">
-            <span>11월 둘째주</span>
+            <span>{{month}}월 {{week}}째주</span>
           </div>
           <div class='emotion_graph_ww'></div>
         </div>
@@ -59,7 +72,7 @@
                 차가 나타나는 경향이 있어요.</li>
             </ul>
           </div>
-          <button type="button">자세히 보기 -></button>
+          <button type="button"><a href="/emotion/report/">자세히 보기 -></a></button>
         </div>
       </div>
     </div>
@@ -89,6 +102,7 @@
             <div class="graph_r_title">
               <span>AI 분석</span>
             </div>
+            <div class='personal_graphh'></div>
           </div>
           <div class="personal_graph_r">그래프</div>
         </div>
