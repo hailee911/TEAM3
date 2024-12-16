@@ -17,11 +17,11 @@ class NoticeBoard(models.Model):
   # img파일 업로드
   bfile = models.ImageField(null=True, blank=True, upload_to='uploads/')
   bfile_thumbnail = models.ImageField(null=True, blank=True, upload_to='uploads/')
-
+  userid = models.CharField(max_length=100,null=True, blank=True)
+  bmail = models.CharField(max_length=100, null=True, blank=True)
   category = models.IntegerField(null=True, blank=False)
+  status = models.CharField(max_length=50, null=True, blank=True)
 
-  ## Board객체 : 좋아요 체크 - bno,member
-  like_members = models.ManyToManyField(Member, related_name='like_postboards',  blank=True)
 
   def __str__(self):
     return f'{self.bno}, {self.btitle}, {self.bdate}'

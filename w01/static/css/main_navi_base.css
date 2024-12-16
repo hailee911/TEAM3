@@ -27,6 +27,15 @@ ol, ul {
 	z-index: 100; /* 상단바의 z-index를 높게 설정 */
 }
 
+#top_nav > h1 > a {
+  display: block; /* a 태그를 블록 요소로 변경 */
+  width: 100%;    /* 부모 h1의 크기를 상속 */
+  height: 100%;   /* 부모 h1의 크기를 상속 */
+  text-indent: -9999px; /* 텍스트를 숨김 */
+  overflow: hidden;     /* 텍스트 숨김 유지 */
+  cursor: pointer;
+}
+
 #gnb {
 	width: 284px;
 	height: 100%;
