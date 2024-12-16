@@ -30,4 +30,4 @@ class Member(models.Model):
   
 
   def __str__(self):
-    return f"{self.id},{self.name},{self.mdate}"
+    return f"{self.id},{self.name},{self.mdate},{self.created_group},{self.joined_group}"
