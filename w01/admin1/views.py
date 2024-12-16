@@ -209,6 +209,21 @@ def admin_noticeList(request):
 	context = {"notiList":qs}
 	return render(request, 'admin_noticeList.html', context)
 
+def admin_noticeList2(request):
+	# 요청에서 데이터 가져오기
+	data = json.loads(request.body)
+	status = data.get('status')
+	bno = data.get('bno')
+	print(status)
+	print(bno)
+
+	# bno로 객체 조회 및 상태 업데이트
+	qs = NoticeBoard.objects.get(bno=bno)
+	qs.status = status
+	qs.save()
+
+	return JsonResponse({'success': True})
+
 # 공지사항 쓰기
 def admin_notiWrite(request):
 	if request.method == 'GET':
@@ -220,7 +235,7 @@ def admin_notiWrite(request):
 		bcontent = request.POST.get("content")
 		bfile = request.FILES.get('bfile','')
 		category = 1
-		NoticeBoard.objects.create(member=member,btitle=btitle,bcontent=bcontent,bfile=bfile,category=category)
+		NoticeBoard.objects.create(member=member,btitle=btitle,bcontent=bcontent,bfile=bfile,category=category, status='게시안함')
 		context = {'wmsg':'1'}
 		return render(request, 'admin_noticeList.html', context)
 	
@@ -305,4 +320,56 @@ def admin_postDelete(request, bno):
 	NoticeBoard.objects.get(bno=bno).delete()
 	context = {'dmsg':bno}
 	return render(request, 'admin_postList.html', context)
+
+
+# 1:1 리스트
+def admin_qList(request):
+	qs_ok = NoticeBoard.objects.filter(category=3, status='답변 완료').order_by("-bno")
+	qs_no = NoticeBoard.objects.filter(category=3, status='답변 전').order_by("-bno")
+	# 작성자
+	context = {'oklist':qs_ok, 'nolist':qs_no}
+	return render(request, 'admin_qList.html', context)
+
+def admin_qListView(request, bno):
+	qs = NoticeBoard.objects.get(bno=bno)
+	## 이전글
+	prev_qs = NoticeBoard.objects.filter(bno__lt=bno, category=3).order_by('-bno').first()
+	# 다음글
+	next_qs = NoticeBoard.objects.filter(bno__gt=bno, category=3).order_by('bno').first()
+	
+	context = {
+		"q": qs,
+		"prev_board": prev_qs,
+		"next_board": next_qs,
+	}
+
+	return render(request, 'admin_qListView.html', context)
+
+def admin_qListchg(request, bno):
+	qs = NoticeBoard.objects.get(bno=bno)
+	qs.status = '답변 완료'
+	qs.save()
+	return redirect('/admin1/admin_qList/')
+
+def admin_qListchg2(request):
+	import json
+	data = json.loads(request.body)
+	members = data.get('members', [])  # members 배열 받기
+
+
+	# 'bno'에 해당하는 항목들을 찾아 'status'를 '답변 완료'로 업데이트
+	NoticeBoard.objects.filter(bno__in=members).update(status="답변 완료")
+
+	return render(request, 'admin_qList.html')
+
+def admin_qListchg3(request):
+	import json
+	data = json.loads(request.body)
+	members = data.get('members', [])  # members 배열 받기
+
+
+	# 'bno'에 해당하는 항목들을 찾아 'status'를 '답변 완료'로 업데이트
+	NoticeBoard.objects.filter(bno__in=members).update(status="답변 전")
+
+	return render(request, 'admin_qList.html')
 

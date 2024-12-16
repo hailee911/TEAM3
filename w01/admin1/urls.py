@@ -25,6 +25,8 @@ urlpatterns = [
 
 	# 공지사항리스트
     path('admin_noticeList/', views.admin_noticeList, name="admin_noticeList"),
+    # 공지사항 상태 변경
+    path('admin_noticeList/status_chg/', views.admin_noticeList2, name="admin_noticeList2"),
 	# 공지사항쓰기
     path('admin_notiWrite/', views.admin_notiWrite, name="admin_notiWrite"),
 	# 공지사항 보기
@@ -46,6 +48,12 @@ urlpatterns = [
 	# 포스트 삭제(여러개 동시 삭제)
     # path('admin_postsDelete/', views.admin_postsDelete, name="admin_notiDelete"),
 
+    # 1:1 문의리스트
+    path('admin_qList/', views.admin_qList, name="admin_qList"),
+    path('admin_qList/<int:bno>/', views.admin_qListView, name="admin_qListView"),
+    path('admin_qList/<int:bno>/chgText/', views.admin_qListchg, name="admin_qListchg"),
+    path('admin_qList/chgText/', views.admin_qListchg2, name="admin_qListchg2"),
+    path('admin_qList/chgText2/', views.admin_qListchg3, name="admin_qListchg3"),
 
 	# 유저상세정보페이지
     path('admin_memView/<str:id>/', views.admin_memView, name="admin_memView"),

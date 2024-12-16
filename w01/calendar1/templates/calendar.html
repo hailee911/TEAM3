@@ -58,13 +58,14 @@
       });
     });
 
+
   </script>
 </head>
 
 <body>
   <!-- 최상단 메뉴 -->
   <div id="top_nav">
-    <h1><a href="#"></a></h1>
+    <h1><a href="/main/index/"></a></h1>
     <ul class="top_menu">
       <li><a id="searchBtn"><img src="{% static '/images/calendar1/search_icon.png'%}" alt="" /></a></li>
       <li><a id="notiBtn"><img src="{% static '/images/calendar1/bell_off_icon.png'%}" alt="" /></a></li>
@@ -86,20 +87,155 @@
     <!-- Nav -->
     <nav id="menu">
       <ul>
-        <a href="#"><li class="menu_item">우리 가족 이야기</li></a>
+        <a href="/main/index/"><li class="menu_item">우리 가족 이야기</li></a>
         <a href="/diary/diaryHome/"><li class="menu_item">다이어리</li></a>
-        <a href="#"><li class="menu_item">감정 돌아보기</li></a>
+        <a href="/emotion/main/"><li class="menu_item">감정 돌아보기</li></a>
         <a href="/family1/fam/"><li class="menu_item">우리가족</li></a>
         <a href="/calendar1/cal/"><li class="menu_item active">캘린더</li></a>
         <a href="/customer/"><li class="menu_item">알려드려요</li></a>
       </ul>
     </nav>
-
+    
     <!-- logout -->
     <div id="logout">
       <a href="#"><span>로그아웃</span></a>
     </div>
   </div>
+
+  <!-- 검색창 슬라이드 -->
+  <div id="s_overlay" class="s_overlay"></div>
+  <div id="main_search" class="search_bar closed">
+    <div id="input_wrap">
+      <div class="search_box">
+        <input type="text" placeholder="다이어리에서 찾고 싶은 내용을 입력하세요.">
+        <img src="/static/images/home/search_icon.png" alt="">
+      </div>
+      <button type="button" id="search_closeBtn">
+        <img src="/static/images/home/close_icon.png" alt="알림창닫기">
+      </button>
+    </div>
+    
+    <div id="search_content">
+      <div id="search_result">
+        검색 결과 <span>(4)</span>
+      </div>
+      <!-- 반복 -->
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <div class="search_list">
+        <a href="">
+          <span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
+          <span class="s_date">2024.12.05</span>
+          <img src="/static/images/home/right.png" alt="">
+        </a>
+      </div>
+      <!-- 반복 -->
+      
+    </div>
+    
+    
+  </div>
+
+
+  <!-- 알림창 슬라이드 -->
+  <div id="n_overlay" class="n_overlay"></div>
+  <div id="noti_side" class="sidebar closed">
+    <div class="noti_header">
+      <h2>알림</h2>
+      <button id="noti_closeBtn"><img src="/static/images/home/close_icon.png" alt="알림창닫기"></button>
+    </div>
+    <ul id="noti_list">
+      <li class="noti_list">
+        <a href="">
+          <div>
+            <img src="/static/images/home/default_profile.png" alt="프로필이미지">
+          </div>
+          <div>
+            <p>장서윤 님이 새로운 기록을 공유했어요.</p>
+          </div>
+        </a>
+      </li>
+      <li class="noti_list checked">
+        <a href="">
+          <div>
+            <img src="/static/images/home/default_profile.png" alt="프로필이미지">
+          </div>
+          <div>
+            <p>배현지 님이 용준님의 기록에 좋아요를 눌렀어요.</p>
+          </div>
+        </a>
+      </li>
+      <li class="noti_list checked">
+        <a href="">
+          <div>
+            <img src="/static/images/home/default_profile.png" alt="프로필이미지">
+          </div>
+          <div>
+            <p>이다영 님이 용준님의 기록에 댓글을 남겼어요.</p>
+          </div>
+        </a>
+      </li>
+      <li class="noti_list checked">
+        <a href="">
+          <div>
+            <img src="/static/images/home/default_profile.png" alt="프로필이미지">
+          </div>
+          <div>
+            <p>정종원 님이 용준님의 기록에 좋아요를 남겼어요.</p>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
 
 
   <!-- container -->

@@ -19,6 +19,12 @@ window.onload = function () {
            barColor: "#F4A79D",
            lineColor: null,
        },
+       {
+           selector: ".personal_graphh",
+           url: '/emotion/main_data5/',
+           barColor: "#344BFD",
+           lineColor: null,
+       },
        
    ];
 
@@ -49,7 +55,7 @@ window.onload = function () {
                .domain(data.map(d => d.name));
 
            const yScale = d3.scaleLinear()
-               .domain([0, d3.max(data, d => d.value)])
+               .domain([0, 100])
                .range([commonHeight - padding, padding]);
 
            svg.selectAll("*").remove();

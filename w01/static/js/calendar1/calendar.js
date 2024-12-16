@@ -19,7 +19,6 @@ modal1.addEventListener('click', (event) => {
 });
 
 
-
 // 달력
 document.addEventListener('DOMContentLoaded', function () {
   var calendarEl = document.getElementById('calendar');
