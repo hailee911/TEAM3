@@ -371,6 +371,11 @@ box-sizing: border-box;
 #non{
 	font-size: 20px;
 }
+#hidden_a{
+	font-size: 20px;
+	color: #456CA8;
+	text-decoration: underline;
+}
 
 #main_me{
 	width: 400px;
@@ -390,7 +395,6 @@ box-sizing: border-box;
   max-height: 1000px; /* 충분히 큰 값으로 설정 */
 }
 #main_me2{
-	margin-left: 40px;
 	width: 400px;
 	height: 420px;
 	border-radius: 20px;
@@ -398,16 +402,22 @@ box-sizing: border-box;
 	box-sizing: border-box; /* padding과 border 포함 */
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
+
+
 .small_title{
-	margin: 30px 120px 0 120px ;
+	width: 380px;
+	margin-top: 30px;
+	justify-content: center;
+	text-align: center;
 	font-size: 20px;
 	font-weight: bold;
 	display: inline-block;
 }
 #king{
+	margin: -50px;
 	position: relative;
-	top: -20px;
-	left: 320px;
+	top: 0px;
+	left: 5px;
 	font-size: 14px;
 	color: #797979;
 	text-decoration: underline;
@@ -556,7 +566,11 @@ box-sizing: border-box;
 	margin-bottom: 6px;
 }
 
-
+#back_cover{
+	width: 840px;
+	display: flex;
+	justify-content: space-between;
+}
 
 
 .hide {
