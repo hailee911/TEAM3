@@ -4,6 +4,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from datetime import timedelta
 from django.utils import timezone
+from loginpage.models import Member
+
+
+
 
 
 @csrf_exempt
