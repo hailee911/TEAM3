@@ -8,7 +8,7 @@ class Member(models.Model):
   name = models.CharField(max_length=100)
   nicName = models.CharField(max_length=100,default='123')
   mail = models.EmailField(max_length=100)
-  birthday = models.CharField(max_length=50)
+  birthday = models.DateField()
   gender = models.CharField(max_length=10,choices=[('남자', '남자'), ('여자', '여자')])
   mdate = models.DateTimeField(auto_now=True)
   # mdate = models.DateTimeField(default=datetime.now())
