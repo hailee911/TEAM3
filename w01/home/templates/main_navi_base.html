@@ -40,6 +40,55 @@
 				});
 
 
+
+				// 검색창 검색기능
+		$('.search_box input').on('keypress', function(event){
+			if (event.key == 'Enter') {
+				// 입력값과 일치하는 일기 찾기
+				alert("데이터가 검색되었습니다.")
+				
+				ctitle = "{{Content.ctitle}}"
+				cdate = "{{Content.cdate}}"
+				ccontent = "{{Content.ccontent}}"
+
+				//ajax 구문
+				$.ajax({
+					headers:{"X-CSRFToken":$("meta[name='csrf-token']").attr("content")},
+					url:"/main/search/",
+					type:"post",
+					data:{"csearch":$("#csearch").val()}, //views.py데이터 보냄
+					success:function(data){
+
+						//data -> 넘어온 검색결과
+						console.log("리스트 : "+data.list_qs)
+						console.log("리스트 : "+data.list_qs[0])
+						console.log("리스트개수 : "+data.list_qs.length)
+
+
+						//html보내는 부분
+						var hdata = ""
+						hdata += `<div id="search_result">검색 결과 <span>(${data.list_qs.length})</span></div>`
+						for(var i=0;i<data.list_qs.length;i++){
+							hdata += `<div class="search_list"><a href="/diary/diaryView/">
+							<span class="s_title"> ${data.list_qs[i].ctitle}</span>
+										<span class="s_date">${data.list_qs[i].cdate}</span>
+										<img src="/static/images/home/right.png" alt="">
+										</a>
+										</div>`
+						}
+								
+								$("#search_content").html(hdata)				
+							},
+							error:function(){
+								alert("에러")
+							}
+						})
+					}
+					event.preventDefault(); // 기본 제출 방지
+		});
+
+
+
 			// 알림창
 			$('#notiBtn').click(function() {
 				$('#noti_side').removeClass('closed').addClass('open');
@@ -96,81 +145,32 @@
 	</div>
 
 	<!-- 검색창 슬라이드 -->
-	<div id="s_overlay" class="s_overlay"></div>
-	<div id="main_search" class="search_bar closed">
-		<div id="input_wrap">
+<div id="s_overlay" class="s_overlay"></div>
+<div id="main_search" class="search_bar closed">
+	<div id="input_wrap">
+		<form action="/main/search/" method="POST" name="searchFrm" id="searchFrm">
 			<div class="search_box">
-				<input type="text" placeholder="다이어리에서 찾고 싶은 내용을 입력하세요.">
+				{% csrf_token %}
+				<input type="text" id="csearch" placeholder="다이어리에서 찾고 싶은 내용을 입력하세요.">
 				<img src="/static/images/home/search_icon.png" alt="">
 			</div>
+		</form>
 			<button type="button" id="search_closeBtn">
 				<img src="/static/images/home/close_icon.png" alt="알림창닫기">
 			</button>
-		</div>
+	</div>
 		
 		<div id="search_content">
 			<div id="search_result">
-				검색 결과 <span>(4)</span>
+				검색 결과 <span>(0)</span>
 			</div>
-			<!-- 반복 -->
 			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
+				<a>
+					<span class="s_title">찾고자 하는 일기를 검색해 보세요.</span>
+					<span class="s_date"></span>
 					<img src="/static/images/home/right.png" alt="">
 				</a>
 			</div>
-			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
-					<img src="/static/images/home/right.png" alt="">
-				</a>
-			</div>
-			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
-					<img src="/static/images/home/right.png" alt="">
-				</a>
-			</div>
-			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
-					<img src="/static/images/home/right.png" alt="">
-				</a>
-			</div>
-			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
-					<img src="/static/images/home/right.png" alt="">
-				</a>
-			</div>
-			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
-					<img src="/static/images/home/right.png" alt="">
-				</a>
-			</div>
-			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
-					<img src="/static/images/home/right.png" alt="">
-				</a>
-			</div>
-			<div class="search_list">
-				<a href="">
-					<span class="s_title">검색어가 들어간 기록의 제목이 들어가는 부분</span>
-					<span class="s_date">2024.12.05</span>
-					<img src="/static/images/home/right.png" alt="">
-				</a>
-			</div>
-			<!-- 반복 -->
-			
 		</div>
 		
 		

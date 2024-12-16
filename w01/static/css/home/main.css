@@ -149,6 +149,11 @@ box-sizing: border-box;
 #input_wrap{
 	display: flex;
 }
+
+#searchFrm{
+	margin: 0 auto;
+	display: flex;
+}
 .search_box {
   display: flex;
   align-items: center;
@@ -161,6 +166,7 @@ box-sizing: border-box;
 	box-sizing: border-box;
   background-color: #f9f9f9;
 }
+
 
 .search_box input {
   border: none;

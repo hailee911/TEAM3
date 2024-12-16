@@ -7,6 +7,8 @@ from django.utils import timezone
 from diary.models import Content
 from diary.models import GroupDiary
 from django.http import HttpResponse
+from django.core.paginator import Paginator
+from diary.models import MdiaryBoard
 
 
 # 우체통
@@ -106,7 +108,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def MdiaryList(request):
-    if request.method == "GET":
+    if request.method == "GET":        
         # 세션에 저장된 ID 가져오기
         session_id = request.session.get('session_id')  # 세션에서 'session_id'를 가져옴
         print("세션아이디:", session_id)
@@ -122,10 +124,28 @@ def MdiaryList(request):
         if not member:
             return render(request, 'error.html', {'message': '사용자 정보가 존재하지 않습니다.'})
 
+        # MdiaryBoard와 Content 가져오기
+        mdiary = MdiaryBoard.objects.filter(id=member).first()  # 사용자와 연결된 MdiaryBoard
+        if not mdiary:
+          return render(request, 'error.html', {'message': '다이어리 정보가 없습니다.'})
+
         # 해당 멤버의 Content 가져오기
-        qs = Content.objects.filter(member=member).order_by("-cdate")
-        context = {'content': qs}
+        qs = Content.objects.filter(member=member).select_related('mdiary').order_by("-cdate")
+
+        npage = request.GET.get('npage', 1)
+        paginator = Paginator(qs, 10)
+        page_obj = paginator.get_page(npage)
+        
+        context = {'content': page_obj.object_list,'MdiaryList':page_obj,'mdiary':mdiary}
         return render(request, 'MdiaryList.html', context)
+    
+    # npage = int(request.GET.get('npage',1))  # 넘어온 현재페이지
+    # qs = Content.objects.all().order_by("-cno")
+    # # 하단페이지 처리(넘버링)
+    # paginator = Paginator(qs,10)  # 10개로 분할
+    # mlist = paginator.get_page(npage)  # 1페이지 10개
+    # context = {"MdiaryList":mlist, "npage":npage}
+    # return render(request,'MdiaryList.html',context)
 
 
 
