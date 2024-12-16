@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static '/css/diary/Mdiary_list.css'%}">
+  <link rel="stylesheet" href="{% static '/css/home/main.css'%}">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <title>내 다이어리 목록</title> 
+</head>
+
+<!-- 공통 상단좌측메뉴 -->
+<script>
+  $(function() {
+    // GNB 클릭
+    $('#menu ul li').on('click', function() {
+      $('#menu ul li').removeClass('active');
+      $(this).addClass('active');
+    });
+  });
+</script>
+</head>
+<body>
+<!-- 최상단 메뉴 -->
+<div id="top_nav">
+  <h1><a href="#"></a></h1>
+  <ul class="top_menu">
+    <li><a href="#"><img src="/static/images/home/search_icon.png" alt=""></a></li>
+    <li><a href="#"><img src="/static/images/home/bell_off_icon.png" alt=""></a></li>
+    <li><a href="#">마이페이지</a></li>
+  </ul>
+
+</div>
+
+<!-- 좌측 gnb -->
+<div id="gnb">
+
+  <!-- 프로필 -->
+  <div id="user_profile">
+    <div id="pimg">
+      <img src="/static/images/home/default_profile.png" alt="">
+    </div>
+    <p id="uName">김용준</p>
+    <p id="uEmail">kyjoon0105@gmail.com</p>
+  </div>
+
+  <!-- Nav -->
+  <nav id="menu">
+    <ul>
+      <a href="/main/index/"><li class="menu_item">우리 가족 이야기</li></a>
+      <a href="/diary/diaryHome/"><li class="menu_item active">다이어리</li></a>
+      <a href="#"><li class="menu_item">감정 돌아보기</li></a>
+      <a href="#"><li class="menu_item">우리가족</li></a>
+      <a href="#"><li class="menu_item">캘린더</li></a>
+      <a href="#"><li class="menu_item">알려드려요</li></a>
+    </ul>
+  </nav>
+
+  <!-- logout -->
+  <div id="logout">
+    <a href="#"><span>로그아웃</span></a>
+  </div>
+  
+</div>
+<!-- 공통 상단좌측메뉴 -->
+
+
+<!-- 다이어리 리스트 -->
+<div id="main_area">
+
+  <div id="title_area">
+    
+    <p id="infoTit">내 다이어리 이름을 설정해 주세요.{{MdiaryList.diarytit}}
+      <span><a href="/diary/diaryWrite/"><button type="button" class="wBtn"><img src="/static/images/diary/writeBtn.png" alt=""></button></a></span>
+      <span><div id="modify_del_slide_1">
+        <button type="button" id="addBtn">
+        <img src="/static/images/customer/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;">
+        </button> 
+        <div class="sub_menu_modal" id="sub_menu_modal_1">
+          <div id="sub_menu_content">
+            <button id="diaryEditBtn">다이어리 수정</button>
+            <button id="diaryDeleteBtn">다이어리 삭제</button>
+          </div>
+        </div>
+      </div></span>
+    </p>
+    
+
+
+    <p id="dateTit">2024년 09월 28일 부터 씀</p>
+  </div>
+  
+  <div id="list_area">
+    {% if content %}
+    {% for c in content %}
+    <div class="list_group">
+      <a href="/diary/diaryView/">
+        <div class="wrap_cont">
+          <span class="tit_post"><span class="num_txt">{{c.cno}}</span>{{c.ctitle}}<span class="img"><img src="/static/images/diary/lock.png" alt=""></span></span>
+          <p class="desc_cont">
+            <span class="diaryTit">내가 한 말을 내가 오해하지 않기로 함</span><span class="space"> | </span>
+            <span class="list_txt">{{c.ccontent}}
+            </span>
+          </p>
+        </div>
+        <dl class="list_post_info">
+          <dd class="txt_g">
+            <span>{{ c.cdate|date:"Y.m.d" }}</span><span class="space"> | </span>
+            <span>댓글</span><span>01</span><span class="space"> | </span>
+            <span>좋아요</span><span>02</span>
+          </dd>
+        </dl>
+      </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    일기를 작성해봅시다!🙌
+    {% endif %}
+    {% comment %} <div class="list_group">
+      <a href="#">
+        <div class="wrap_cont">
+          
+          <span class="tit_post"><span class="num_txt">35</span> 제일 행복했던 순간과 제일 최악의 순간이 모두 있던 날<span class="img"><img src="/static/images/diary/lock.png" alt=""></span></span>
+          <p class="desc_cont">
+            <span class="diaryTit">내가 한 말을 내가 오해하지 않기로 함</span><span class="space"> | </span>
+            <span class="list_txt">오늘은 정말 감정이 롤러코스터를 타듯 오르락내리락했던 날이었다.
+              제일 행복했던 순간과 제일 최악의 순간이 모두 내 하루에 존재했다는 게 신기할 정도다.
+              아침은 평화롭게 시작했다. 창밖으로 비추는 햇살이 따뜻해서 기분 좋게 눈을 떴고, 가족들과 오랜만에 아침 식사를 함께 했는데. 엄마가 해준 김치찌개는 정말 최고였다.
+              </span>
+          </p>
+        </div>
+        <dl class="list_post_info">
+          <dd class="txt_g">
+            <span>2024.11.29</span><span class="space"> | </span>
+            <span>댓글</span><span>01</span><span class="space"> | </span>
+            <span>좋아요</span><span>02</span>
+          </dd>
+        </dl>
+      </a>
+    </div>
+    <div class="list_group">
+      <a href="#">
+        <div class="wrap_cont">
+          
+          <span class="tit_post"><span class="num_txt">35</span> 제일 행복했던 순간과 제일 최악의 순간이 모두 있던 날<span class="img"><img src="/static/images/diary/lock.png" alt=""></span></span>
+          <p class="desc_cont">
+            <span class="diaryTit">내가 한 말을 내가 오해하지 않기로 함</span><span class="space"> | </span>
+            <span class="list_txt">오늘은 정말 감정이 롤러코스터를 타듯 오르락내리락했던 날이었다.
+              제일 행복했던 순간과 제일 최악의 순간이 모두 내 하루에 존재했다는 게 신기할 정도다.
+              아침은 평화롭게 시작했다. 창밖으로 비추는 햇살이 따뜻해서 기분 좋게 눈을 떴고, 가족들과 오랜만에 아침 식사를 함께 했는데. 엄마가 해준 김치찌개는 정말 최고였다.
+              </span>
+          </p>
+        </div>
+        <dl class="list_post_info">
+          <dd class="txt_g">
+            <span>2024.11.29</span><span class="space"> | </span>
+            <span>댓글</span><span>01</span><span class="space"> | </span>
+            <span>좋아요</span><span>02</span>
+          </dd>
+        </dl>
+      </a> {% endcomment %}
+    </div>
+
+  </div>
+
+  <ul class="page_num">
+    <li><a href="#"><img src="/static/images/diary/left_double.png" alt=""></a></li>
+    <li><a href="#"><img src="/static/images/diary/left.png" alt=""></a></li>
+    <li class="nowNum"><a href="#">1</a></li>
+    <li><a href="#">2</a></li> 
+    <li><a href="#">3</a></li> 
+    <li><a href="#">4</a></li> 
+    <li><a href="#">5</a></li> 
+    <li><a href="#">6</a></li> 
+    <li><a href="#">7</a></li> 
+    <li><a href="#">8</a></li> 
+    <li><a href="#">9</a></li> 
+    <li><a href="#">10</a></li> 
+    <li><a href="#"><img src="/static/images/diary/right.png" alt=""></a></li>
+    <li><a href="#"><img src="/static/images/diary/right_double.png" alt=""></a></li>
+  </ul>
+</div>
+
+<script>
+  // 첫 번째 모달 열기/닫기
+  document.getElementById('openModal_1').addEventListener('click', function() {
+    var modal = document.getElementById('sub_menu_modal_1');
+    console.log('첫 번째 모달 클릭됨');
+    modal.classList.toggle('open'); // open 클래스가 있으면 제거, 없으면 추가
+  });
+
+  
+  document.getElementById('back_click').addEventListener('click', function() {
+    console.log('목록 클릭됨');
+    location.href='/customer/noticelist/'
+  });
+</script>
+
+</body>
+</html>
