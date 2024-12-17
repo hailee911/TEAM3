@@ -8,9 +8,10 @@ def main(request):
     # 프로필 가져오기 
     mem = Member.objects.filter(id = request.session['session_id'])
     qs = NoticeBoard.objects.filter(category=1, status='게시중').order_by('-bno')[:5]
-    context = {'notice_5':qs, 'mem_info':mem[0]}
+    qs_post = NoticeBoard.objects.filter(category=2).order_by('-bno')
+    context = {'notice_5':qs, 'mem_info':mem[0], 'post_lists':qs_post}
 
-  # 1:1 문의 작성하기 버튼 눌렀을 때
+    # 1:1 문의 작성하기 버튼 눌렀을 때
   else:
     mem = Member.objects.filter(id = request.session['session_id'])
     requ_title = request.POST.get('requ_title')

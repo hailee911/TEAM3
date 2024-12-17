@@ -40,43 +40,33 @@
       <h2>알려드려요</h2>
       <span>가족과 친해지는 방법을 알려드릴게요.</span>
       <div class="how_dairy">
+        {% if post_lists %}
+          {% for post in post_lists %}
+          <div class="slider-item" style="background-image: url('{{ post.bfile_thumbnail.url }}'); background-size: cover; background-position: center;">
+          </div>
+          {% endfor %}
+        {% else %}
         <div class="slider-item">
-          <p>가족을 칭찬하는<br>다이어리를 써보세요.</p>
+          <p>곧 새로운 정보를<br>보여드릴게요~</p>
         </div>
-        <div class="slider-item">
-          <p>가족을 칭찬하는<br>다이어리를 써보세요.</p>
-        </div>
-        <div class="slider-item">
-          <p>가족을 칭찬하는<br>다이어리를 써보세요.</p>
-        </div>
-        <div class="slider-item">
-          <p>가족을 칭찬하는<br>다이어리를 써보세요.</p>
-        </div>
-        <div class="slider-item">
-          <p>가족을 칭찬하는<br>다이어리를 써보세요.</p>
-        </div>
-        <div class="slider-item">
-          <p>가족을 칭찬하는<br>다이어리를 써보세요.</p>
-        </div>
-        <div class="slider-item">
-          <p>가족을 칭찬하는<br>다이어리를 써보세요.</p>
-        </div>
+        {% endif %}
       </div>
     </div>
     <div id="customer_service_notice">
-      <span>관리자 공지사항</span>
+      <span>공지사항</span>
       <div class="customer_service_notice_table">
         <table>
           <colgroup>
-            <col style="width:15%;">
+            <col style="width:10%;">
             <col style="width:50%;">
-            <col style="width:15%;">
-            <col style="width:20%;">
+            <col style="width:10%;">
+            <col style="width:10%;">
           </colgroup>
+          {% if notice_5 %}
           {% for notice in notice_5%}
           <tr>
             <td>{{forloop.revcounter}}</td>
-            <td><a href="/customer/noticeview/{{notice.bno}}/">{{notice.btitle}}</a></td>
+            <td  class="t_left"><a href="/customer/noticeview/{{notice.bno}}/">{{notice.btitle}}</a></td>
             <td>관리자</td>
             <td>{{notice.bdate|date:'Y-m-d'}}</td>
           </tr>
@@ -84,6 +74,11 @@
           <tr class="notice_list_last">
             <td colspan="4"><a href="/customer/noticelist/"><span>전체 공지 보기</span><img src="/static/images/customer/Expand_right_light.png" alt=""></a></td>
           </tr>
+          {% else %}
+          <tr>
+            <td colspan='4'><img src="/static/images/customer/Document Align Left 11.png" alt=""><br><br>회원님을 위한 공지사항이 생기면 알려드릴게요.<br></td>
+          </tr>
+          {% endif %}
         </table>
       </div>
     </div>
@@ -91,7 +86,7 @@
       <span>자주 묻는 질문</span>
       <div class="customer_service_qnabox">
         <div class="customer_service_q">
-          <p>회원 탈퇴는 어떻게 하는지 궁금해요</p>
+          <p><strong>Q.  </strong>  회원 탈퇴는 어떻게 하는지 궁금해요</p>
         </div>
         <div class="customer_service_a">
           <p><strong>Q. </strong> 회원 탈퇴는 어떻게 하는지 궁금해요</p>
@@ -100,7 +95,7 @@
           단, 남아있는 예치금, 적립금, 쿠폰은 모두 삭제되며 복구가 불가합니다. 또한 동일 이름, 동일 계정, 동일 연락처 등으로 재가입이 불가능합니다.</p>
         </div>
         <div class="customer_service_q">
-          <p>회원 탈퇴는 어떻게 하는지 궁금해요</p>
+          <p><strong>Q.  </strong>  회원 탈퇴는 어떻게 하는지 궁금해요</p>
         </div>
         <div class="customer_service_a">
           <p><strong>Q. </strong> 회원 탈퇴는 어떻게 하는지 궁금해요</p>
@@ -109,7 +104,7 @@
           단, 남아있는 예치금, 적립금, 쿠폰은 모두 삭제되며 복구가 불가합니다. 또한 동일 이름, 동일 계정, 동일 연락처 등으로 재가입이 불가능합니다.</p>
         </div>
         <div class="customer_service_q">
-          <p>회원 탈퇴는 어떻게 하는지 궁금해요</p>
+          <p><strong>Q.  </strong>  회원 탈퇴는 어떻게 하는지 궁금해요</p>
         </div>
         <div class="customer_service_a">
           <p><strong>Q. </strong> 회원 탈퇴는 어떻게 하는지 궁금해요</p>
@@ -118,7 +113,8 @@
           단, 남아있는 예치금, 적립금, 쿠폰은 모두 삭제되며 복구가 불가합니다. 또한 동일 이름, 동일 계정, 동일 연락처 등으로 재가입이 불가능합니다.</p>
         </div>
         <div class="customer_service_q">
-          <p>회원 탈퇴는 어떻게 하는지 궁금해요</p>
+          <p><strong>Q.  </strong>  회원 탈퇴는 어떻게 하는지 궁금해요</p>
+          <div class='l'></div>
         </div>
         <div class="customer_service_a">
           <p><strong>Q. </strong> 회원 탈퇴는 어떻게 하는지 궁금해요</p>
@@ -127,7 +123,7 @@
           단, 남아있는 예치금, 적립금, 쿠폰은 모두 삭제되며 복구가 불가합니다. 또한 동일 이름, 동일 계정, 동일 연락처 등으로 재가입이 불가능합니다.</p>
         </div>
         <div class="customer_service_q">
-          <p>회원 탈퇴는 어떻게 하는지 궁금해요</p>
+          <p><strong>Q.  </strong>  회원 탈퇴는 어떻게 하는지 궁금해요</p>
         </div>
         <div class="customer_service_a">
           <p><strong>Q. </strong> 회원 탈퇴는 어떻게 하는지 궁금해요</p>

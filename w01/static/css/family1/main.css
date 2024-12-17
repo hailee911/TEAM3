@@ -385,7 +385,12 @@ box-sizing: border-box;
 	padding-bottom:10px; /* 내부 여백 */
 	box-sizing: border-box; /* padding과 border 포함 */
 	border-radius: 20px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+
+	background: #fcfcfc;
+	box-shadow: 10px 10px 20px #eef1f3b2, -10px -10px 19px #eef1f3b2;
+	/* background: #ececec;
+ 	box-shadow: 20px 20px 30px #e2e4e6b2,-20px -20px 30px #e2e4e6b2; */
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); */
 }
 #main_me.expanded {
   max-height: 1000px; /* 충분히 큰 값으로 설정 */
@@ -398,9 +403,11 @@ box-sizing: border-box;
 	width: 400px;
 	height: 420px;
 	border-radius: 20px;
+  background: #fcfcfc;
+	box-shadow: 10px 10px 20px #eef1f3b2, -10px -10px 19px #eef1f3b2;
 	padding-bottom:10px; /* 내부 여백 */
 	box-sizing: border-box; /* padding과 border 포함 */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); */
 }
 
 
@@ -410,7 +417,8 @@ box-sizing: border-box;
 	justify-content: center;
 	text-align: center;
 	font-size: 20px;
-	font-weight: bold;
+	font-weight: 600;
+	color: #222;
 	display: inline-block;
 }
 #king{

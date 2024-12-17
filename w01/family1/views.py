@@ -87,17 +87,24 @@ def fam(request):
     created_group_name = created_group_list[2] if len(created_group_list) > 2 else None
     joined_group_name = joined_group_list[2] if len(joined_group_list) > 2 else None
 
-    # 그룹 존재 여부 확인
-    has_group = bool(created_group or joined_group)
-
     # 같은 그룹에 가입된 멤버들 가져오기
     joined_group_members = Member.objects.filter(joined_group=created_group) if created_group else []
+    if not joined_group_members:user.created_group = None
+    if not joined_group_members:created_group = None
 
     # 같은 그룹에 가입된 멤버들 가져오기2
     created_group_members = Member.objects.filter(Q(created_group=joined_group) | Q(joined_group=joined_group)).exclude(id=id) if joined_group else []
-    print("joined_group_members: ",joined_group_members)
+    created_group_members1 = Member.objects.filter(created_group=joined_group) if joined_group else []
+    if not created_group_members1:user.joined_group = None
+    if not created_group_members1:joined_group = None
+    user.save()
+
+    # 그룹 존재 여부 확인
+    has_group = bool(created_group or joined_group)
+
     # 컨텍스트 데이터 구성
     context = {
+        'user':user,
         'has_group': has_group,
         'created_group': created_group,
         'joined_group': joined_group,

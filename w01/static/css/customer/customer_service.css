@@ -59,6 +59,7 @@ table, tr, td{
   min-width: 340px;
   height: 340px;
   margin: 20px 20px 0 0;
+  border-radius: 20px;
 }
 
 #customer_service_top .how_dairy p{
@@ -71,7 +72,7 @@ table, tr, td{
 
 /* 공지사항 부분 */
 #customer_service_notice{
-  margin-bottom: 50px;
+  margin-bottom: 80px;
 }
 
 #customer_service_notice span{
@@ -79,28 +80,43 @@ table, tr, td{
 } 
 
 .customer_service_notice_table{
-  border: 1px solid #ddd;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f6f6f6;
+  /* box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); */
+
+  border-radius: 4px;
+  background: #f5f5f5;
+  box-shadow: 20px 20px 60px #e7e7e7d2,-20px -20px 60px #ffffff;
   margin-top: 20px;
 }
 
 #customer_service_notice table{
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin: 20px 0;
   width: 100%;
 }
 
+
 #customer_service_notice table td{
-  height: 50px;
+  height: 46px;
   font-size: 18px;
   color: #000;
   text-align: center;
   box-sizing: border-box;
 }
 
+#customer_service_notice table td:nth-child(2){
+  text-align: left;
+}
+
+#customer_service_notice table tr:last-child{
+ height: 50px;
+ padding-top: 30px;
+}
+
+
 #customer_service_notice table td a{
   color: #333;
 }
+
 
 #customer_service_notice .notice_list_last span{
   width: 130px;
@@ -122,7 +138,7 @@ table, tr, td{
 
 /* 자주 묻는 질문 */
 #customer_service_qna{
-  margin-bottom: 50px;
+  margin-bottom: 80px;
 }
 
 #customer_service_qna span{
@@ -130,29 +146,37 @@ table, tr, td{
 } 
 
 .customer_service_qnabox{
-  border: 1px solid #ddd;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f6f6f6;
+  border-radius: 20px;
+  background: #f5f5f5;
+  box-shadow: 20px 20px 60px #e7e7e7d2,-20px -20px 60px #ffffff;
+  margin-top: 20px;
 
   margin-top: 20px;
 }
 
-.customer_service_qnabox div{
+/* .customer_service_qnabox div{
   border-bottom: 1px solid #DBDBDB;
-}
+} */
 
 .customer_service_q {
   height: 60px;
-  padding: 21px 21px;
-  border-bottom: 1px solid #DBDBDB;
-  font-size: 16px;
-  color: #0F0F0F;
+  padding: 21px 32px;
+  /* border-bottom: 1px solid #DBDBDB; */
+  font-size: 17px;
+  color: #222;
   cursor: pointer;
+}
+
+
+.customer_service_q strong{
+  margin-right: 10px;
 }
 
 .customer_service_a{
   display: none; /* 처음엔 숨김 */
   padding: 10px;
-  background: #DBDBDB;
+  background: #ffffff;
   box-shadow: inset 14px 18px 17.1px rgba(255, 255, 255, 0.27);
 }
 
@@ -161,18 +185,18 @@ table, tr, td{
 }
 
 .customer_service_a p{
-  font-size: 16px;
-  color: #0F0F0F;
-  margin: 16px 0 10px 20px;
+  font-size: 17px;
+  color: #222;
+  margin: 20px 0 20px 20px;
 }
 
 .customer_service_a hr{
-  border: 1px solid white;
+  border: 1px solid #f1f1f1;
 }
 
 /* 1:1 문의 */
 #customer_service_request{
-  margin-bottom: 50px;
+  margin-bottom: 80px;
 }
 
 #customer_service_request span{

@@ -207,8 +207,8 @@
       <div id="pimg">
         <img src="{% static 'images/family1/default_profile.png'%}" alt="" />
       </div>
-      <p id="uName">김용준</p>
-      <p id="uEmail">kyjoon0105@gmail.com</p>
+      <p id="uName">{{user.name}}</p>
+      <p id="uEmail">{{user.mail}}</p>
     </div>
 
     <!-- Nav -->
@@ -225,7 +225,7 @@
 
     <!-- logout -->
     <div id="logout">
-      <a href="#"><span>로그아웃</span></a>
+      <a href="/main/logout/"><span>로그아웃</span></a>
     </div>
   </div>
 
