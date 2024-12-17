@@ -5,6 +5,7 @@ from django.db.models import Sum, Count, F
 from django.db.models.functions import Extract, TruncDate
 from math import ceil
 from calendar import monthrange
+from calendar import monthrange
 from loginpage.models import Member
 from emotion.models import EmotionScore
 
@@ -78,7 +79,7 @@ def run_ai_process(request):
         selected_mbti = request.GET.get('mbti')
     
     # Google Vertex AI 설정
-    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ""
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ""
     vertexai.init(project="alert-condition-443702-g2", location="us-central1")
     
     # AI 작업 실행
@@ -168,6 +169,24 @@ def main_data1(request):
     print(data)
 
 
+  # emotionscore 가져오기
+  file_path = r'C:\Users\KOSMO\Documents\GitHub\TEAM3\w01\media\txt\r2024-12-16_5.txt'  # 파일 경로
+
+  with open(file_path, 'r', encoding='utf-8') as file:
+    lines = file.readlines()  # 파일의 모든 줄을 리스트로 읽기
+    target_keyword = "행복 점수"
+    filtered_lines = [line.strip() for line in lines if target_keyword in line]
+    print(filtered_lines)
+
+    import re
+    data = []
+    for line in filtered_lines:
+        matches = re.findall(r'\d+', line)  # 정규식으로 숫자만 추출
+        data.extend(matches)
+
+    print(data)
+
+
   # 주 계산 및 평균 값 계산
   grouped_data = (
         scores.annotate(
@@ -217,7 +236,12 @@ def main_data2(request):
 
         # 오늘 날짜가 속한 주의 월요일과 일요일 구하기
         monday_date = current_date - timedelta(days=weekday)  # 오늘에서 weekday만큼 빼면 월요일
+        # 오늘 날짜가 속한 주의 월요일과 일요일 구하기
+        monday_date = current_date - timedelta(days=weekday)  # 오늘에서 weekday만큼 빼면 월요일
         sunday_date = monday_date + timedelta(days=6)
+
+        # 월요일부터 일요일까지의 날짜 목록 생성
+        week_dates = [monday_date + timedelta(days=i) for i in range(7)]
 
         # 월요일부터 일요일까지의 날짜 목록 생성
         week_dates = [monday_date + timedelta(days=i) for i in range(7)]
@@ -251,11 +275,22 @@ def main_data2(request):
             for item in grouped_data
         }
 
+        # 날짜별로 데이터 매핑
+        grouped_data_dict = {
+            item['day_of_month']: {
+                "total_value": item['total_value'],
+                "count": item['count']
+            }
+            for item in grouped_data
+        }
+
         # 요일 이름 리스트
         weekdays = ["월", "화", "수", "목", "금", "토", "일"]
 
         # 결과 처리
         data = []
+        for date in week_dates:
+            day_of_month = date.day
         for date in week_dates:
             day_of_month = date.day
             weekday_name = weekdays[date.weekday()]  # 0=월, 6=일
@@ -268,9 +303,20 @@ def main_data2(request):
             else:
                 average_value = 0
 
+
+            # 데이터가 존재하면 평균 계산, 없으면 0으로 초기화
+            if day_of_month in grouped_data_dict:
+                total_value = grouped_data_dict[day_of_month]['total_value']
+                count = grouped_data_dict[day_of_month]['count']
+                average_value = round(total_value / count, 2) if count > 0 else 0
+            else:
+                average_value = 0
+
             data.append({
                 "name": day_of_month,  # 날짜
+                "name": day_of_month,  # 날짜
                 "label": weekday_name,  # 요일
+                "value": average_value  # 평균값 (없으면 0)
                 "value": average_value  # 평균값 (없으면 0)
             })
 
@@ -292,6 +338,55 @@ def main_data4(request):
     { "name": "정종원", "value": 16 },
   ]
   print('데이터4',data)
+  return JsonResponse(data, safe=False)
+
+def main_data5(request):
+  # 현재 날짜 기준으로 year, month 구하기
+  current_date = datetime.today()
+  year = current_date.year
+  month = current_date.month
+  
+  # 4개월 전 날짜 계산
+  four_months_ago = current_date.replace(month=current_date.month - 4 if current_date.month > 4 else current_date.month + 8, 
+                                             year=current_date.year - 1 if current_date.month <= 4 else current_date.year)
+    
+  # 프로필 가져오기
+  id = Member.objects.get(id = request.session['session_id'])
+  member = EmotionScore.objects.filter(member=id)
+    
+  # 4개월 전부터 현재 월까지의 데이터 구하기
+  data = []
+  for i in range(4):  # 최근 4개월
+    target_month = current_date.month - i
+    target_year = current_date.year
+
+    if target_month <= 0:
+      target_month += 12
+      target_year -= 1
+        
+    # 해당 월의 첫날과 마지막 날 계산
+    first_day_of_month = datetime(target_year, target_month, 1)
+    last_day_of_month = datetime(target_year, target_month, monthrange(target_year, target_month)[1])
+
+    # 해당 월에 작성된 일기 수 구하기
+    diary_count = EmotionScore.objects.filter(
+        member=id,
+        diarydate__gte=first_day_of_month,
+        diarydate__lte=last_day_of_month
+    ).count()
+
+    if diary_count == 0:
+        diary_count = 0
+
+    # data에 월과 일기 수 추가
+    data.append({
+        "name": f"{target_month}월",  # name에 월을 넣음
+        "value": diary_count         # value에 해당 월의 일기 수
+    })
+
+    print(data)
+    # 결과를 JSON 형태로 반환
+    return JsonResponse(data, safe=False)
   return JsonResponse(data, safe=False)
 
 def main_data5(request):
