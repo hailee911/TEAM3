@@ -6,6 +6,7 @@ from django.db.models.functions import Extract, TruncDate
 from math import ceil
 from calendar import monthrange
 from loginpage.models import Member
+from diary.models import Content
 from emotion.models import EmotionScore
 
 # AI PYTHON
@@ -13,6 +14,31 @@ import os
 import base64
 from vertexai.generative_models import GenerativeModel, Part, SafetySetting
 import vertexai
+from django.conf import settings
+
+def save_content_to_txt():
+    # Content 모델에서 모든 게시글 가져오기
+    contents = Content.objects.all()
+    # 'emotion/gemini' 폴더가 존재하는지 확인하고, 없으면 생성
+    save_dir = os.path.join(settings.BASE_DIR, 'emotion', 'gemini')
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    for i, content in enumerate(contents, start=1):
+        # 'd숫자.txt' 파일 이름 지정
+        file_name = f"d{i}.txt"
+        file_path = os.path.join(save_dir, file_name)
+        # ccontent와 cdate 가져오기
+        ccontent = content.ccontent
+        cdate = content.cdate
+        # 텍스트 파일로 저장
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(f"{cdate.strftime('%Y-%m-%d %H:%M:%S')}\n\n")  # cdate를 첫 번째 줄에 작성
+            f.write(f"{ccontent}\n")  # ccontent를 두 번째 줄에 작성
+        print(f"{file_name} 저장 완료.")
+        
+def save_diaries_to_txt(request):
+    save_content_to_txt()  # 게시글을 텍스트 파일로 저장하는 함수 호출
+    return render(request, 'report.html')  # 알림 페이지로 리디렉션
 
 # AI 작업을 위한 별도 함수 정의
 def generate_for_multiple_files(mbti):
@@ -21,8 +47,7 @@ def generate_for_multiple_files(mbti):
         input_file_path = f"emotion/gemini/d{i}.txt"
         # output_file_path = f"emotion/gemini/r{i}.txt"
         # 현재 날짜를 파일 이름에 추가 (예: r2024-12-16.txt)
-        current_date = datetime.now().strftime("%Y-%m-%d")
-        output_file_path = f"emotion/gemini/r{current_date}_{i}.txt"
+        output_file_path = f"emotion/gemini/r{i}.txt"
         
         try:
             with open(input_file_path, "r", encoding="utf-8") as file:
@@ -141,35 +166,31 @@ def main(request):
   return render(request, 'e_main.html', context)
 
 def main_data1(request):
-  # 현재 날짜 기준으로 year, month 구하기
-  current_date = datetime.today()
-  year = current_date.year
-  month = current_date.month
+    # 현재 날짜 기준으로 year, month 구하기
+    current_date = datetime.today()
+    year = current_date.year
+    month = current_date.month
 
-  # 프로필 가져오기 
-  id = Member.objects.get(id = request.session['session_id'])
-  scores = EmotionScore.objects.filter(member=id, diarydate__year=year, diarydate__month=month)
+    # 프로필 가져오기
+    member = Member.objects.get(id=request.session['session_id'])
+    scores = EmotionScore.objects.filter(member=member, diarydate__year=year, diarydate__month=month)
 
-  # emotionscore 가져오기
-  file_path = r'C:\Users\KOSMO\Documents\GitHub\TEAM3\w01\media\txt\r2024-12-16_5.txt'  # 파일 경로
+    # 다음 달 계산 및 현재 월의 마지막 날짜 계산
+    if month == 12:  # 12월일 경우
+        next_month = 1
+        next_year = year + 1
+    else:
+        next_month = month + 1
+        next_year = year
 
-  with open(file_path, 'r', encoding='utf-8') as file:
-    lines = file.readlines()  # 파일의 모든 줄을 리스트로 읽기
-    target_keyword = "행복 점수"
-    filtered_lines = [line.strip() for line in lines if target_keyword in line]
-    print(filtered_lines)
+    days_in_month = (datetime(next_year, next_month, 1) - timedelta(days=1)).day
 
-    import re
-    data = []
-    for line in filtered_lines:
-        matches = re.findall(r'\d+', line)  # 정규식으로 숫자만 추출
-        data.extend(matches)
+    # 총 주 계산
+    total_weeks = (days_in_month - 1) // 7 + 1
+    week_data = {week: {"total_value": 0, "count": 0} for week in range(1, total_weeks + 1)}
 
-    print(data)
-
-
-  # 주 계산 및 평균 값 계산
-  grouped_data = (
+    # 그룹화 데이터 가져오기
+    grouped_data = (
         scores.annotate(
             day_of_month=Extract('diarydate', 'day'),  # 일(day)만 추출
         )
@@ -180,32 +201,21 @@ def main_data1(request):
         )
         .order_by('day_of_month')  # 날짜 순으로 정렬
     )
-  
-  data = []
-  week_data = {}
 
-  for item in grouped_data:
-        # 주 계산: (day_of_month - 1) // 7 + 1
+    # 주별 데이터 계산
+    for item in grouped_data:
         week_of_month = (item['day_of_month'] - 1) // 7 + 1
-        average_value = round(item['total_value'] / item['count'], 2)
-
-        # 주별로 묶기
-        if week_of_month not in week_data:
-            week_data[week_of_month] = {
-                'total_value': 0,
-                'count': 0
-            }
-
-        # 합산
         week_data[week_of_month]['total_value'] += item['total_value']
         week_data[week_of_month]['count'] += item['count']
 
-  # 주별 평균 계산
-  for week, values in week_data.items():
-      average_value = round(values['total_value'] / values['count'], 2)
-      data.append({"name": f"{week}주", "value": average_value})
+    # 주별 평균값 계산
+    data = []
+    for week, values in week_data.items():
+        average_value = round(values['total_value'] / values['count'], 2) if values['count'] > 0 else 0
+        data.append({"name": f"{week}주", "value": average_value})
 
-  return JsonResponse(data, safe=False)
+    print("Final Data:", data)  # 디버깅용
+    return JsonResponse(data, safe=False)
 
 def main_data2(request):
     try:
@@ -338,6 +348,7 @@ def main_data5(request):
         "value": diary_count         # value에 해당 월의 일기 수
     })
 
-    print(data)
-    # 결과를 JSON 형태로 반환
-    return JsonResponse(data, safe=False)
+  print('데이터 5 : ',data)
+  # 데이터를 역순으로 정렬 (가장 최근 데이터가 오른쪽에 오도록)
+  data.reverse()
+  return JsonResponse(data, safe=False)

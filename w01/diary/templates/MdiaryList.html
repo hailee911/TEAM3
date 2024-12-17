@@ -12,6 +12,63 @@
 
 <!-- 공통 상단좌측메뉴 -->
 <script>
+  // 다이어리 수정 버튼 클릭 시 수정 모드로 전환
+  function enableEdit() {
+    let titleInput = document.getElementById('diaryTitleInput');
+    titleInput.disabled = false;  // 수정 가능하도록 활성화
+    titleInput.focus();  // 커서를 입력란에 위치시킴
+    
+    // 수정 완료 버튼 생성
+    let saveBtn = document.createElement('button');
+    saveBtn.innerHTML = '수정 완료';
+    saveBtn.onclick = saveTitle;
+    
+    // 기존에 있던 수정 완료 버튼이 있다면 삭제 후 새로운 버튼을 추가
+    let existingSaveBtn = document.getElementById('saveBtn');
+    if (existingSaveBtn) {
+      existingSaveBtn.remove();
+    }
+    
+    titleInput.parentNode.appendChild(saveBtn);
+    saveBtn.id = 'saveBtn';
+  }
+
+  // 수정 완료 버튼 클릭 시 서버로 변경 사항 전송
+  function saveTitle() {
+    let newTitle = document.getElementById('diaryTitleInput').value;
+    let currentTitle = "{{ mdiary.mtitle }}"; // 템플릿에서 현재 제목 값 가져오기
+
+    if (newTitle !== currentTitle) {
+      // 수정된 제목이 기존 제목과 다르면 서버로 전송
+      fetch('/diary/update-title/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'  // CSRF 토큰 추가
+        },
+        body: JSON.stringify({ title: newTitle })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('다이어리가 수정되었습니다.');
+          document.getElementById('diaryTitleInput').disabled = true;  // 입력창 비활성화
+        } else {
+          alert('수정 중 오류가 발생했습니다.');
+        }
+      });
+    }
+  }
+
+  // 취소 시 confirm 창 표시 후 수정 취소
+  function cancelEdit() {
+    if (confirm('수정을 취소하시겠습니까?')) {
+      document.getElementById('diaryTitleInput').value = "{{mdiary.mtitle}}";  // 원래 제목으로 되돌리기
+      document.getElementById('diaryTitleInput').disabled = true;  // 입력창 비활성화
+    }
+  }
+
+
   $(function() {
     // GNB 클릭
     $('#menu ul li').on('click', function() {
@@ -72,26 +129,26 @@
   <div id="title_area">
     <p id="infoTit">
       {% if mdiary %}
-        {{mdiary.mtitle}}
+        {% comment %} {{mdiary.mtitle}} {% endcomment %}
+        <input type="text" id="diaryTitleInput" value="{{mdiary.mtitle}}" disabled>
       {% else %}
-        내 다이어리 이름을 설정해 주세요.
+      <input type="text" id="diaryTitleInput" value="내 다이어리 이름을 설정해 주세요." disabled>
       {% endif %}
-        <span><a href="/diary/diaryWrite/"><button type="button" class="wBtn"><img src="/static/images/diary/writeBtn.png" alt=""></button></a></span>
-        <span><div id="modify_del_slide_1">
-          <button type="button" id="addBtn">
-          <img src="/static/images/customer/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;">
-          </button> 
-          <div class="sub_menu_modal" id="sub_menu_modal_1">
-            <div id="sub_menu_content">
-              <button id="diaryEditBtn">다이어리 수정</button>
-              <button id="diaryDeleteBtn">다이어리 삭제</button>
-            </div>
+      <span><div id="modify_del_slide_1">
+        <button type="button" id="addBtn">
+        <img src="/static/images/customer/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;">
+        </button></span>
+      <span>
+        <button type="button" class="wBtn"><a href="/diary/diaryWrite/"><img id="writeBtn" src="/static/images/diary/writeBtn.png" alt=""></a></button>
+        <div class="sub_menu_modal" id="sub_menu_modal_1">
+          <div id="sub_menu_content">
+            <button id="diaryEditBtn" onclick="enableEdit()">다이어리 수정</button>
+            {% comment %} <button id="diaryDeleteBtn">다이어리 삭제</button> {% endcomment %}
           </div>
-        </div></span>
-    </p>
+        </div>
+      </div></span>
+  </p>
     
-
-
     <p id="dateTit">{{mdiary.mdate|date:"Y년 m월 d부터 씀"}}</p>
   </div>
   
@@ -103,7 +160,7 @@
         <div class="wrap_cont">
           <span class="tit_post"><span class="num_txt">{{forloop.revcounter}}</span>{{c.ctitle}}<span class="img"><img src="/static/images/diary/lock.png" alt=""></span></span>
           <p class="desc_cont">
-            <span class="diaryTit">내가 한 말을 내가 오해하지 않기로 함</span><span class="space"> | </span>
+            <span class="diaryTit">{{mdiary.mtitle}}</span><span class="space"> | </span>
             <span class="list_txt">{{c.ccontent}}
             </span>
           </p>

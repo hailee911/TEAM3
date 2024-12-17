@@ -9,4 +9,5 @@ urlpatterns = [
     path('diaryWrite/', views.diaryWrite, name="diaryWrite"),
     path('diaryMake/', views.diaryMake, name="diaryMake"),
     path('diaryView/', views.diaryView, name="diaryView"),
+    path('update-title/', views.update_diary_title, name='update_diary_title'),
 ]
