@@ -1,0 +1,311 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/diary/diary_write.css'%}">
+  <link rel="stylesheet" href="{% static 'css/home/main.css'%}">
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <title>다이어리 작성</title>
+</head>
+
+<!-- 공통 상단좌측메뉴 -->
+<script>
+  $(function () {
+    // GNB 클릭
+    $('#menu ul li').on('click', function () {
+      $('#menu ul li').removeClass('active');
+      $(this).addClass('active');
+    });
+  });
+
+  
+</script>
+</head>
+
+<body>
+  <!-- 최상단 메뉴 -->
+  <div id="top_nav">
+    <h1><a href="#"></a></h1>
+    <ul class="top_menu">
+      <li><a href="#"><img src="/static/images/home/search_icon.png" alt=""></a></li>
+      <li><a href="#"><img src="/static/images/home/bell_off_icon.png" alt=""></a></li>
+      <li><a href="#">마이페이지</a></li>
+    </ul>
+
+  </div>
+
+  <!-- 좌측 gnb -->
+  <div id="gnb">
+
+    <!-- 프로필 -->
+    <div id="user_profile">
+      <div id="pimg">
+        <img src="/static/images/home/default_profile.png" alt="">
+      </div>
+      <p id="uName">김용준</p>
+      <p id="uEmail">kyjoon0105@gmail.com</p>
+    </div>
+
+    <!-- Nav -->
+    <nav id="menu">
+      <ul>
+        <a href="#">
+          <li class="menu_item">우리 가족 이야기</li>
+        </a>
+        <a href="#">
+          <li class="menu_item active">다이어리</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">감정 돌아보기</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">우리가족</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">캘린더</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">알려드려요</li>
+        </a>
+      </ul>
+    </nav>
+
+    <!-- logout -->
+    <div id="logout">
+      <a href="#"><span>로그아웃</span></a>
+    </div>
+
+  </div>
+  <!-- 공통 상단좌측메뉴 -->
+
+  <!-- 다이어리 작성 메인 -->
+  <div id="diary_write">
+    <h1>일기 작성</h1>
+    <form action= "{% url 'diary:diaryWrite' %}" id="writeFrm" name="writeFrm" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" name="title" id="title" placeholder="제목을 입력해주세요." required>
+      </div>
+      <div class="form-group">
+        <!-- 생성 날짜 자동 기입(db) -->
+        <label for="date">오늘 날짜</label>
+        <input type="date" name="date" id="date" value="{{ current_date }}">
+      </div>
+      <!-- 사진 업로드 -->
+      <div class="form-group">
+        <label for="image">사진 업로드</label>
+        <div class="file-input-container">
+          <input type="file" id="image" name="image" multiple accept="image/*" onchange="previewImages(event)">
+        </div>
+
+        <!-- 이미지 미리보기 영역 -->
+        <div class="image-preview-container" id="image-preview-container"></div>
+      </div>
+      <div class="form-group">
+        <label for="content">내용</label>
+        <textarea name="content" id="content" rows="10" oninput="autoResize(this)" placeholder="내용을 입력해주세요."
+          required></textarea>
+      </div>
+
+      <!-- 다이어리 체크박스 예시 -->
+      <!-- {% if diaries %}
+      <div>
+        <p>공유 다이어리에 등록합니다:</p>
+        {% for diary in diaries %}
+        <label>
+          <input type="checkbox" name="diary_ids" value="{{ diary.id }}">
+          {{ diary.title }}
+        </label><br>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>공유 가능한 다이어리가 없습니다.</p>
+      {% endif %} -->
+
+      {% if created_group or joined_group %}
+      <div class="form-group">
+          <label>공유</label><br>
+
+          {% if created_group %}
+          <label id="fdiary">
+              {{ created_group.gName }}
+              <input type="checkbox" id="share" name="diary_ids" value="{{ created_group.gno }}">
+          </label>
+          {% endif %}
+
+          {% if joined_group %}
+          <label id="fdiary">
+              {{ joined_group.gName }}
+              <input type="checkbox" id="share" name="diary_ids" value="{{ joined_group.gno }}">
+          </label>
+          {% endif %}
+      </div>
+      {% endif %}
+
+      <button type="submit" onclick='saveBtn(event)' class="save">저장</button>
+      <button type="button" class="cancel" onclick="confirmCancel()">취소</button>
+  </div>
+  </form>
+
+  <!-- 확대된 이미지 팝업 -->
+  <div class="image-popup" id="image-popup">
+    <span class="close-popup" onclick="closePopup()">×</span>
+    <img id="popup-image" src="" alt="Enlarged Image">
+  </div>
+
+  
+</div>
+<script type="text/javascript">
+
+  {% comment %} var checkUnload = true;
+    $(window).on('beforeunload', function () {
+        if (checkUnload) return "이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.";
+    });
+    $("#write").on("click", function () {
+        checkUnload = false;
+        $("submit").submit();
+    }); {% endcomment %}
+
+  // 다이어리 저장 후 알림 처리 및 페이지 이동
+  function saveBtn(event) {
+    event.preventDefault();  // 폼이 자동으로 제출되는 것을 방지
+    if ($("#title").val().length < 1) {
+      alert("제목을 입력해주세요.");
+      $("#title").focus();
+      return false;
+    }
+    writeFrm.submit()
+  }
+    
+  // 취소 버튼 클릭 시 확인 메시지
+  function confirmCancel() {
+    var confirmAction = confirm("정말 취소하시겠습니까?");
+    if (confirmAction) {
+      window.location.href = '/diary/MdiaryList/';  // 취소 후 이동
+    }
+  }
+
+  if ("{{wmsg}}" == "1"){
+    alert("저장되었습니다.")
+    location.href = '/diary/MdiaryList/'
+  }
+  
+  function autoResize(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  // 이미지 미리보기 및 여러 이미지 처리
+  function previewImages(event) {
+    const files = event.target.files;  // 업로드된 파일 목록
+    const previewContainer = document.getElementById('image-preview-container');
+
+    // 기존 이미지가 있다면 유지하고 새로운 이미지를 추가
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;  // 이미지 데이터를 URL로 설정
+        img.onclick = function () {
+          openPopup(img.src);  // 이미지 클릭 시 확대 보기
+        };
+        previewContainer.appendChild(img);  // 이미지 미리보기 영역에 추가
+      };
+
+      reader.onerror = function (error) {
+        console.error("파일 읽기 오류:", error);
+      };
+
+      reader.readAsDataURL(file);  // 파일을 데이터 URL로 읽어 이미지 미리보기
+    });
+  }
+
+  // 이미지 확대 보기 팝업 열기
+  function openPopup(imageSrc) {
+    const popup = document.getElementById('image-popup');
+    const popupImage = document.getElementById('popup-image');
+    popup.style.display = 'flex';
+    popupImage.src = imageSrc;
+  }
+
+  // 이미지 확대 보기 팝업 닫기
+  function closePopup() {
+    const popup = document.getElementById('image-popup');
+    popup.style.display = 'none';
+  }
+
+  //이미지 삭제
+  function previewImages(event) {
+    const files = event.target.files; // 업로드된 파일 목록
+    const previewContainer = document.getElementById('image-preview-container');
+  
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+  
+      reader.onload = function (e) {
+        // 이미지와 삭제 버튼을 감싸는 wrapper 생성
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('image-wrapper');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+  
+        // 이미지 생성
+        const img = document.createElement('img');
+        img.src = e.target.result; // 이미지 데이터를 URL로 설정
+        img.alt = 'Uploaded image';
+        img.onclick = function () {
+          openPopup(img.src); // 이미지 클릭 시 확대 보기
+        };
+  
+        // 삭제 버튼 생성
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('delete-button');
+        deleteButton.innerText = '×';
+        deleteButton.onclick = function () {
+          wrapper.remove(); // 이미지 wrapper 삭제
+        };
+  
+        // wrapper에 이미지와 버튼 추가
+        wrapper.appendChild(img);
+        wrapper.appendChild(deleteButton);
+  
+        // 미리보기 컨테이너에 wrapper 추가
+        previewContainer.appendChild(wrapper);
+      };
+  
+      reader.onerror = function (error) {
+        console.error("파일 읽기 오류:", error);
+      };
+  
+      reader.readAsDataURL(file); // 파일을 데이터 URL로 읽어 이미지 미리보기
+    });
+  }
+  
+  // 이미지 확대 보기 팝업 열기
+  function openPopup(imageSrc) {
+    const popup = document.getElementById('image-popup');
+    const popupImage = document.getElementById('popup-image');
+    popup.style.display = 'flex';
+    popupImage.src = imageSrc;
+  }
+  
+  // 이미지 확대 보기 팝업 닫기
+  function closePopup() {
+    const popup = document.getElementById('image-popup');
+    popup.style.display = 'none';
+  }
+  
+
+</script>
+
+
+</body>
+
+</html>

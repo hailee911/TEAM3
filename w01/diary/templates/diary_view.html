@@ -1,0 +1,227 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/diary/diary_view.css'%}">
+  <link rel="stylesheet" href="{% static 'css/home/main.css'%}">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <title>diary view</title>
+</head>
+
+<!-- 공통 상단좌측메뉴 -->
+<script>
+  $(function () {
+    // GNB 클릭
+    $('#menu ul li').on('click', function () {
+      $('#menu ul li').removeClass('active');
+      $(this).addClass('active');
+    });
+  });
+  
+</script>
+
+<body>
+  <!-- 최상단 메뉴 -->
+  <div id="top_nav">
+    <h1><a href="#"></a></h1>
+    <ul class="top_menu">
+      <li><a href="#"><img src="/static/images/home/search_icon.png" alt=""></a></li>
+      <li><a href="#"><img src="/static/images/home/bell_off_icon.png" alt=""></a></li>
+      <li><a href="#">마이페이지</a></li>
+    </ul>
+
+  </div>
+
+  <!-- 좌측 gnb -->
+  <div id="gnb">
+
+    <!-- 프로필 -->
+    <div id="user_profile">
+      <div id="pimg">
+        <img src="/static/images/home/default_profile.png" alt="">
+      </div>
+      <p id="uName">김용준</p>
+      <p id="uEmail">kyjoon0105@gmail.com</p>
+    </div>
+
+    <!-- Nav -->
+    <nav id="menu">
+      <ul>
+        <a href="#">
+          <li class="menu_item">우리 가족 이야기</li>
+        </a>
+        <a href="#">
+          <li class="menu_item active">다이어리</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">감정 돌아보기</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">우리가족</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">캘린더</li>
+        </a>
+        <a href="#">
+          <li class="menu_item">알려드려요</li>
+        </a>
+      </ul>
+    </nav>
+
+    <!-- logout -->
+    <div id="logout">
+      <a href="#"><span>로그아웃</span></a>
+    </div>
+
+  </div>
+  <!-- 공통 상단좌측메뉴 -->
+
+
+  <!-- 메인 -->
+  <div id="container">
+    <div id="diary_view_top">
+      <div class="diary_view_title">
+        <h2>제일 행복했던 순간과 제일 최악의 순간이 모두 있던 날</h2>
+        <span>2024년 11월 29일</span>
+        <span>김용준 작성</span>
+      </div>
+      <div id="modify_del_slide_1">
+        <img src="/static/images/diary/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;"> <!-- 커서 포인터 추가 -->
+        <div class="sub_menu_modal" id="sub_menu_modal_1">
+          <div id="sub_menu_content">
+            <button id="editButton_1">수정</button>
+            <button id="deleteButton_1">삭제</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="diary_content">
+      <p>
+        오늘은 정말 감정이 롤러코스터를 타듯 오르락내리락했던 날이었다.<br>
+        제일 행복했던 순간과 제일 최악의 순간이 모두 내 하루에 존재했다는 게 신기할 정도다.<br><br>
+        아침은 평화롭게 시작했다. 창밖으로 비추는 햇살이 따뜻해서 기분 좋게 눈을 떴고, 가족들과 오랜만에 아침 식사를 함께 했다. 엄마가 해준 김치찌개는 정말 최고였다. 식사 후에는 공원으로 산책을 갔다. 가을이 끝자락에 이르러 붉게 물든 단풍들이 너무 아름다워서 가족들과 사진도 찍고 이야기를 나누며 행복한 시간을 보냈다.
+      </p>
+      <img src="/static/images/diary/diary_img.jpg" alt="">
+      <p>
+        하지만, 점심을 먹고 나서 갑작스러운 소식이 날 기다리고 있었다. 학원에서 중요한 프로젝트가 갑자기 무산되었다는 연락이었다. 몇 달 동안 열심히 준비했던 일이라 충격이 컸다. 내가 했던 노력이 아무 소용없었다고 느껴지는 순간, 말로 표현할 수 없는 허탈함이 밀려왔다. 분노와 슬픔이 교차하며 속이 텅 빈 듯했다.<br><br>
+        그래도 오후에는 가까운 친구가 위로를 해주겠다고 집 앞으로 찾아왔다. 함께 카페에 가서 이야기를 나누며 마음을 조금씩 추슬렀다. 친구가 내 얘기를 진지하게 들어주고, 웃긴 얘기로 기운을 북돋아줬다. 이 친구가 있어서 얼마나 다행인지 모른다.<br><br>
+        저녁에는 예상치 못한 일이 벌어졌다. 오랫동안 연락이 끊겼던 고등학교 시절의 절친이 갑자기 연락을 해 온 것이다. 너무 반가워서 한참 동안 전화를 붙들고 이야기를 나눴다. 서로의 최근 소식을 전하며 웃음이 끊이질 않았다. 오랜만에 옛 추억을 떠올리며 마음이 따뜻해졌다.<br><br>
+        하루가 끝나가는 지금, 오늘 하루를 돌아보며 묘한 감정이 든다. 너무 행복했던 순간도 있었고, 정말 최악이라 느껴졌던 순간도 있었다. 하지만 이런 날이야말로 내가 살아 있음을 느끼게 해주는 것 같다. 기쁨과 슬픔이 공존하는 하루가 결국 나를 더 단단하게 만들어주는 것 같다.<br><br>
+        결론은 삶은 예상할 수 없지만, 그래도 그 안에서 의미를 찾아가는 것이 내가 할 수 있는 최선이다.
+      </p>
+    </div>
+    <div id="diary_list">
+      <table>
+        <colgroup>
+          <col style="width:15%;">
+          <col style="width:50%;">
+          <col style="width:15%;">
+          <col style="width:20%;">
+        </colgroup>
+        <tr>
+          <th colspan="4">우리 가족 일기</th>
+        </tr>
+        {% if content %}
+        {% for c in content %}
+        <tr>
+          <td>{{c.cno}}</td>
+          <td><a href="">{{c.ctitle}}</a></td>
+          <td>{{c.member.nicName}}</td>
+          <td>{{c.cdate|date:"y.m.d"}}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+        <tr>
+          <td>78</td>
+          <td><a href="">스키장에서 보낸 즐건 하루</a></td>
+          <td>배현지</td>
+          <td>24.12.01</td>
+        </tr>
+        <tr>
+          <td>78</td>
+          <td><a href="">스키장에서 보낸 즐건 하루</a></td>
+          <td>배현지</td>
+          <td>24.12.01</td>
+        </tr>
+        <tr>
+          <td>78</td>
+          <td><a href="">스키장에서 보낸 즐건 하루</a></td>
+          <td>배현지</td>
+          <td>24.12.01</td>
+        </tr>
+        <tr>
+          <td>78</td>
+          <td><a href="">스키장에서 보낸 즐건 하루</a></td>
+          <td>배현지</td>
+          <td>24.12.01</td>
+        </tr>
+        <tr class="diary_list_last">
+          <td colspan="4"><a href="/diary/MdiaryList/"><span>전체 일기 보기(총 {{content.count}}개)</span><img src="/static/images/diary/Expand_right_light.png" alt=""></a></td>
+        </tr>
+      </table>
+    </div>
+    <div class="diary_react">
+      <div class="diary_like">
+        <img src="/static/images/diary/Favorite_light.png" alt="" id="like_click"><span>43</span>
+      </div>
+      <div class="diary_comment">
+        <img src="/static/images/diary/Chat_alt_2_light.png" alt=""><span>댓글 1</span>
+      </div>
+    </div>
+    <div id="comment">
+      <div id="comment_view">
+        <div class="profile_img">
+          <img src="/static/images/diary/profile_img.png" alt="">
+        </div>
+        <div class="comment_detail">
+          <div class="comment_name">장서윤</div>
+          <div class="comment_date">2024.11.24 12:33:21</div>
+        </div>
+        <div id="modify_del_slide_2">
+          <img src="/static/images/diary/addBtn.png" alt="" id="openModal_2" style="cursor: pointer;"> <!-- 커서 포인터 추가 -->
+          <div class="sub_menu_modal" id="sub_menu_modal_2">
+            <div id="sub_menu_content">
+              <button id="editButton_2">수정</button>
+              <button id="deleteButton_2">삭제</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comment_content">
+        <span>정말 힘든 하루였겠다.. 그치만 얻은것도 많은 하루였으니 다행이야~</span>
+      </div>
+      <div class="comment_reply_btn">
+         답글달기
+      </div>
+    </div>
+    <div class="comment_regist">
+      <textarea placeholder="댓글을 달아보세요."  onfocus="this.placeholder=''" onblur="this.placeholder='댓글을 달아보세요.'"></textarea>
+      <button type="button" value="등록">등록</button>
+    </div>
+  </div>
+
+  <script>
+    // 첫 번째 모달 열기/닫기
+    document.getElementById('openModal_1').addEventListener('click', function() {
+      var modal = document.getElementById('sub_menu_modal_1');
+      console.log('첫 번째 모달 클릭됨');
+      modal.classList.toggle('open'); // open 클래스가 있으면 제거, 없으면 추가
+    });
+
+    // 두 번째 모달 열기/닫기
+    document.getElementById('openModal_2').addEventListener('click', function() {
+      var modal = document.getElementById('sub_menu_modal_2');
+      console.log('두 번째 모달 클릭됨');
+      modal.classList.toggle('open'); // open 클래스가 있으면 제거, 없으면 추가
+    });
+
+    // 하트 클릭하면 색깔 바뀜
+    document.getElementById('like_click').addEventListener('click', function() {
+      console.log('하트 클릭됨');
+      this.src = this.src.includes('/static/images/diary/Favorite_light.png') ? '/static/images/diary/Favorite_duotone.png' : '/static/images/diary/Favorite_light.png';
+    });
+  </script>
+</body>
+</html>
