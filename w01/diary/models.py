@@ -53,15 +53,16 @@ class Content(models.Model):
   member = models.ForeignKey(Member,on_delete=models.DO_NOTHING, null=False) # 유저id & 닉네임 가져옴
   ctitle = models.CharField(max_length=1000)
   ccontent = models.TextField(null=True)
-  cdate = models.DateField(default=timezone.now)  # 기본값을 오늘 날짜로 설정
-  group_diary  = models.ForeignKey(GroupDiary, on_delete=models.CASCADE, null=True, blank=True)
-  # 공용다이어리 db 만들면 추후 업데이트
+  cdate = models.DateTimeField(default=timezone.now)  # 기본값을 오늘 날짜로 설정
+  group_diary  = models.ManyToManyField(GroupDiary, blank=True) # created_group joined_group 체크박스로 선택 후 그룹 다이어리에 일기 표시
   image = models.ImageField(upload_to='diary_images/', blank=True, null=True)  # 이미지
 
-   # 개인다이어리 db
+  # 개인다이어리 db
   mdiary = models.ForeignKey(MdiaryBoard, on_delete=models.CASCADE, null=True, blank=True)
 
   def __str__(self):
-    return f"{self.cno},{self.member.id},{self.ctitle},{self.ccontent},{self.cdate},{self.group_diary},{self.member.nicName}"
+    group_diaries = ", ".join([str(diary) for diary in self.group_diary.all()])
+    return f"{self.cno}, {self.member.id}, {self.ctitle}, {self.ccontent}, {self.cdate}, [{group_diaries}], {self.member.nicName}"
+
 
 

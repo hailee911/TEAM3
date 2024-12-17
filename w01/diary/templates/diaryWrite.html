@@ -135,14 +135,14 @@
           {% if created_group %}
           <label id="fdiary">
               {{ created_group.gName }}
-              <input type="checkbox" id="share" name="diary_ids" value="{{ created_group.gno }}">
+              <input type="checkbox" id="share" name="diary_idc" value="{{ created_group.gno }}">
           </label>
           {% endif %}
 
           {% if joined_group %}
           <label id="fdiary">
               {{ joined_group.gName }}
-              <input type="checkbox" id="share" name="diary_ids" value="{{ joined_group.gno }}">
+              <input type="checkbox" id="share" name="diary_idj" value="{{ joined_group.gno }}">
           </label>
           {% endif %}
       </div>

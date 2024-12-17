@@ -316,7 +316,7 @@ def main_data2(request):
                 "name": day_of_month,  # 날짜
                 "name": day_of_month,  # 날짜
                 "label": weekday_name,  # 요일
-                "value": average_value  # 평균값 (없으면 0)
+                "value": average_value,  # 평균값 (없으면 0)
                 "value": average_value  # 평균값 (없으면 0)
             })
 

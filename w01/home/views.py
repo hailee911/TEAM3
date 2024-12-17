@@ -14,7 +14,9 @@ def main(request):
 
 def logout(request):
   request.session.clear()
-  return redirect('/')
+  response = redirect('/')
+  response.delete_cookie('sessionid')  # 세션 쿠키 삭제
+  return response
 
 # 검색창
 def search(request):

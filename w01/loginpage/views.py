@@ -282,12 +282,12 @@ def login(request):
       request.session['session_id'] = id
       request.session['session_mail'] = mail
       request.session['session_name'] = name
-      print("2")
+      print("로그인성공2")
       return redirect('/index')  # 성공 시 리다이렉트
     else:  # 로그인 실패
-      print("3")
+      print("로그인실패3")
       context = {'lmsg': "아이디와 비밀번호를 확인해 주세요."}
       return render(request, 'login.html', context)  # 실패 시 에러 메시지와 함께 템플릿 렌더링
   else:
-    print("1")
+    print("로그인창들어감1")
     return render(request, 'login.html')
