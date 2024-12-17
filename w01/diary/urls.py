@@ -7,5 +7,5 @@ urlpatterns = [
     path('MdiaryList/', views.MdiaryList, name="MdiaryList"),
     path('diaryWrite/', views.diaryWrite, name="diaryWrite"),
     path('diaryMake/', views.diaryMake, name="diaryMake"),
-    path('diaryView/', views.diaryView, name="diaryView"),
+    path('diary_view/<int:cno>/', views.diary_view, name="diary_view"),
 ]

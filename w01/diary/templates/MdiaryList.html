@@ -76,11 +76,12 @@
       {% else %}
         내 다이어리 이름을 설정해 주세요.
       {% endif %}
-        <span><a href="/diary/diaryWrite/"><button type="button" class="wBtn"><img src="/static/images/diary/writeBtn.png" alt=""></button></a></span>
         <span><div id="modify_del_slide_1">
           <button type="button" id="addBtn">
           <img src="/static/images/customer/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;">
-          </button> 
+          </button></span>
+        <span>
+          <button type="button" class="wBtn"><a href="/diary/diaryWrite/"><img id="writeBtn" src="/static/images/diary/writeBtn.png" alt=""></a></button> 
           <div class="sub_menu_modal" id="sub_menu_modal_1">
             <div id="sub_menu_content">
               <button id="diaryEditBtn">다이어리 수정</button>
@@ -99,11 +100,11 @@
     {% if content %}
     {% for c in content %}
     <div class="list_group">
-      <a href="/diary/diaryView/">
+      <a href="/diary/diary_view/{{c.cno}}/?pageNum={{forloop.revcounter}}">
         <div class="wrap_cont">
           <span class="tit_post"><span class="num_txt">{{forloop.revcounter}}</span>{{c.ctitle}}<span class="img"><img src="/static/images/diary/lock.png" alt=""></span></span>
           <p class="desc_cont">
-            <span class="diaryTit">내가 한 말을 내가 오해하지 않기로 함</span><span class="space"> | </span>
+            <span class="diaryTit">{{mdiary.mtitle}}</span><span class="space"> | </span>
             <span class="list_txt">{{c.ccontent}}
             </span>
           </p>

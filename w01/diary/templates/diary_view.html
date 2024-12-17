@@ -83,9 +83,9 @@
   <div id="container">
     <div id="diary_view_top">
       <div class="diary_view_title">
-        <h2>제일 행복했던 순간과 제일 최악의 순간이 모두 있던 날</h2>
-        <span>2024년 11월 29일</span>
-        <span>김용준 작성</span>
+        <h2>{{cont.ctitle}}</h2>
+        <span>{{cont.cdate}}</span>
+        <span>{{cont.member.name}}</span>
       </div>
       <div id="modify_del_slide_1">
         <img src="/static/images/diary/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;"> <!-- 커서 포인터 추가 -->
@@ -98,18 +98,11 @@
       </div>
     </div>
     <div id="diary_content">
-      <p>
-        오늘은 정말 감정이 롤러코스터를 타듯 오르락내리락했던 날이었다.<br>
-        제일 행복했던 순간과 제일 최악의 순간이 모두 내 하루에 존재했다는 게 신기할 정도다.<br><br>
-        아침은 평화롭게 시작했다. 창밖으로 비추는 햇살이 따뜻해서 기분 좋게 눈을 떴고, 가족들과 오랜만에 아침 식사를 함께 했다. 엄마가 해준 김치찌개는 정말 최고였다. 식사 후에는 공원으로 산책을 갔다. 가을이 끝자락에 이르러 붉게 물든 단풍들이 너무 아름다워서 가족들과 사진도 찍고 이야기를 나누며 행복한 시간을 보냈다.
-      </p>
-      <img src="/static/images/diary/diary_img.jpg" alt="">
-      <p>
-        하지만, 점심을 먹고 나서 갑작스러운 소식이 날 기다리고 있었다. 학원에서 중요한 프로젝트가 갑자기 무산되었다는 연락이었다. 몇 달 동안 열심히 준비했던 일이라 충격이 컸다. 내가 했던 노력이 아무 소용없었다고 느껴지는 순간, 말로 표현할 수 없는 허탈함이 밀려왔다. 분노와 슬픔이 교차하며 속이 텅 빈 듯했다.<br><br>
-        그래도 오후에는 가까운 친구가 위로를 해주겠다고 집 앞으로 찾아왔다. 함께 카페에 가서 이야기를 나누며 마음을 조금씩 추슬렀다. 친구가 내 얘기를 진지하게 들어주고, 웃긴 얘기로 기운을 북돋아줬다. 이 친구가 있어서 얼마나 다행인지 모른다.<br><br>
-        저녁에는 예상치 못한 일이 벌어졌다. 오랫동안 연락이 끊겼던 고등학교 시절의 절친이 갑자기 연락을 해 온 것이다. 너무 반가워서 한참 동안 전화를 붙들고 이야기를 나눴다. 서로의 최근 소식을 전하며 웃음이 끊이질 않았다. 오랜만에 옛 추억을 떠올리며 마음이 따뜻해졌다.<br><br>
-        하루가 끝나가는 지금, 오늘 하루를 돌아보며 묘한 감정이 든다. 너무 행복했던 순간도 있었고, 정말 최악이라 느껴졌던 순간도 있었다. 하지만 이런 날이야말로 내가 살아 있음을 느끼게 해주는 것 같다. 기쁨과 슬픔이 공존하는 하루가 결국 나를 더 단단하게 만들어주는 것 같다.<br><br>
-        결론은 삶은 예상할 수 없지만, 그래도 그 안에서 의미를 찾아가는 것이 내가 할 수 있는 최선이다.
+      {% if cont.image %}
+      <img src="{{ cont.image.url }}" alt="Diary Image">
+      {% endif %}
+      <p style="width: 1052px;">
+        {{cont.ccontent}}
       </p>
     </div>
     <div id="diary_list">
@@ -133,33 +126,49 @@
         </tr>
         {% endfor %}
         {% endif %}
+
+        <!-- 다음 글 최대 4개 -->
+        {% for post in next_posts %}
         <tr>
+          <td>{{ pageNum|add:forloop.revcounter }}</td>
+          <td>
+            <a href="/diary/diary_view/{{c.cno}}">{{ post.ctitle }}</a>
+          </td>
+          <td>{{ post.member.name }}</td>
+          <td>{{ post.cdate|date:"Y.m.d" }}</td>
+        </tr>
+        {% endfor %}
+
+        <!-- 이전 글 최대 4개 -->
+        {% for post in previous_posts %}  
+        <tr>
+          <td>{{ adjusted_pageNum }}</td>
+          <td>
+            <a href="/diary/diary_view/{{c.cno}}">{{ post.ctitle }}</a>
+          </td>
+          <td>{{ post.member.name }}</td>
+          <td>{{ post.cdate|date:"Y.m.d" }}</td>
+        </tr>
+        {% endfor %} 
+
+
+
+
+        {% comment %} <tr>
           <td>78</td>
           <td><a href="">스키장에서 보낸 즐건 하루</a></td>
-          <td>배현지</td>
+          <td>{{cont.member.name}}</td>
           <td>24.12.01</td>
         </tr>
         <tr>
           <td>78</td>
           <td><a href="">스키장에서 보낸 즐건 하루</a></td>
-          <td>배현지</td>
-          <td>24.12.01</td>
-        </tr>
-        <tr>
-          <td>78</td>
-          <td><a href="">스키장에서 보낸 즐건 하루</a></td>
-          <td>배현지</td>
-          <td>24.12.01</td>
-        </tr>
-        <tr>
-          <td>78</td>
-          <td><a href="">스키장에서 보낸 즐건 하루</a></td>
-          <td>배현지</td>
+          <td>{{cont.member.name}}</td>
           <td>24.12.01</td>
         </tr>
         <tr class="diary_list_last">
           <td colspan="4"><a href="/diary/MdiaryList/"><span>전체 일기 보기(총 {{content.count}}개)</span><img src="/static/images/diary/Expand_right_light.png" alt=""></a></td>
-        </tr>
+        </tr> {% endcomment %}
       </table>
     </div>
     <div class="diary_react">

@@ -1,4 +1,4 @@
-`*{margin:0; padding:0; 
+*{margin:0; padding:0; 
   font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;}
 
 a{text-decoration: none; color:inherit}
@@ -14,7 +14,6 @@ a{text-decoration: none; color:inherit}
 #title_area{
   width:1457px; 
   height:140px; 
-  margin-bottom: 60px;
 }
 
 #infoTit{
@@ -24,17 +23,25 @@ a{text-decoration: none; color:inherit}
   padding-top:30px;
 }
 
-.wBtn{
-  margin-left:800px;
-  border:none;
-  background: none;
-}
 
 #addBtn{
   border:none;
   background:none;
   margin-right:150px;
   display:flex;
+  /* position: relative; */
+  padding-left: 860px;
+}
+
+.wBtn{
+  margin-left:800px;
+  border:none;
+  background: none;
+}
+
+#writeBtn{
+  margin-right: 500px;
+  margin-top: 15px;
 }
 
 /* 모달 */
@@ -43,6 +50,7 @@ a{text-decoration: none; color:inherit}
   position: relative; /* 슬라이드 창 위치를 이 요소를 기준으로 설정 */
   position: absolute;
   right: 0;
+  bottom: 730px;
 }
 
 /* 슬라이드 창(모달) 스타일 */
@@ -59,6 +67,7 @@ a{text-decoration: none; color:inherit}
   transition: transform 0.3s ease-in-out; /* 애니메이션 효과 */
   transform: translateY(-20px); /* 초기 상태에서 살짝 위에 위치 */
   cursor: pointer;
+  margin-left: 800px;
 }
 
 /* 슬라이드 창이 열릴 때 */

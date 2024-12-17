@@ -25,7 +25,8 @@ table, tr, td{
 #container{
   width: 100%;
   min-height: 100vh; /* 화면 높이와 동일하게 설정 */
-  padding: 100px 300px 0 300px;
+  padding: 70px 300px 0 350px;
+  /* margin-left: 50px; */
 }
 
 /* 게시글 상단 */
@@ -62,11 +63,13 @@ table, tr, td{
 #diary_content{
   width: 100%;
   margin-bottom: 100px;
+  margin-top: 50px;
 }
 
 #diary_content p{
   margin: 20px 0 20px 0;
   line-height: 35px;
+  padding: 0 10px;
 }
 
 #diary_content img{
