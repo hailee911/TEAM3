@@ -31,6 +31,10 @@
 				$(this).addClass('active');
 			});
 		});
+
+		{% if alert %}
+					alert("다이어리가 텍스트 파일로 저장되었습니다.");
+		{% endif %}
 	</script>
 </head>
 
@@ -128,6 +132,10 @@
 					</select>
 						<button type="submit" id="aiBtn">분석시작</button>
 					</form>
+					<!-- 다이어리 저장 버튼 -->
+					<form method="GET">
+						<button type="submit" id="txtBtn" name="save" value="true">다이어리 텍스트로 저장</button>
+					</form>
 				</div>
 		</div>
 
@@ -145,7 +153,8 @@
 							<p>{{ error }}</p>  <!-- 오류 메시지 출력 -->
 					</div>
 				{% else %}
-				  <h2>💥주의💥</h2>
+				  <h2>💥주의💥</h2> <br>
+					<p><strong>다이어리 텍스트로 저장 버튼을 누르고 분석 시작 버튼을 눌러주세요!</strong></p>
 					<p>AI 분석이 아직 실행되지 않았습니다. MBTI를 선택 후 분석 시작 버튼을 <strong>한 번만</strong> 눌러주세요.<br> <strong>처리 시간이 조금 걸릴 수도 있습니다. 조금만 기다려 주세요!</strong><br>
 						❗새로고침을 하거나 페이지를 나가면 분석 결과가 초기화되어 결과가 바뀔 수도 있습니다.
 						<br><strong>( 이후 이전 결과는 되돌리기 쉽지 않습니다. 💦)</strong></p>
@@ -155,7 +164,7 @@
 		</div>
 		<div id="bottom">
 			<span>상기 리포트 AI가 작성한 것으로 일상생활에서의 참고용 정도로만 봐주세요.</span>
-			<button type="button">다운로드</button>
+			{% comment %} <button type="button">다운로드</button> {% endcomment %}
 		</div>
 	</div>
 
