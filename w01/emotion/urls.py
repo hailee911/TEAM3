@@ -7,4 +7,7 @@ urlpatterns = [
     path('main_data1/', views.main_data1, name="main_data1"),
     path('main_data2/', views.main_data2, name="main_data2"),
     path('main_data4/', views.main_data4, name="main_data4"),
+    path('main_data5/', views.main_data5, name="main_data5"),
+    path('report/', views.report, name="report"),
+    path("run-ai/", views.run_ai_process, name="run_ai_process"),
 ]
