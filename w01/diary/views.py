@@ -250,7 +250,10 @@ def diaryWrite(request):
 				)
 				new_diary.save()
 				## 공유하려는 다이어리가 있으면
-				if selected_groups[0]  != '' and  selected_groups[1]  != '':
+				print("selected_groups : ",selected_groups)
+				if selected_groups[0]  == '' and  selected_groups[1]  == '':
+					return redirect('diary:MdiaryList')
+				else:
 						# join된 일기장에만 공유
 						if selected_groups[0] == '':
 								joined_group = GroupDiary.objects.filter(gno=selected_groups[1]).first()
@@ -264,58 +267,69 @@ def diaryWrite(request):
 								created_group = GroupDiary.objects.filter(gno=selected_groups[0]).first()
 								joined_group = GroupDiary.objects.filter(gno=selected_groups[1]).first()
 								new_diary.group_diary.add(created_group,joined_group)
+						print("그룹다이어리 : ",new_diary.group_diary)
 						return redirect('diary:MdiaryList')  # 다이어리 리스트로 리다이렉트
-				else:
-					return redirect('diary:MdiaryList')
 		
 
 # 다이어리 view 추후 업데이트 >>
 def diary_view(request,cno):
 		# mdiary = Content.objects.filter(cno=cno)
 		
-		# 현재 게시물
 		current_post = Content.objects.filter(cno=cno)
 		if not current_post:
 				return HttpResponse("게시물이 존재하지 않습니다.", status=404)
 
-		# 이전글: 현재 글보다 cno가 작은 값 중에서 최신순으로 최대 4개
-		previous_posts = Content.objects.filter(cno__lt=cno).order_by('-cno')[:4]
+		# 이전글: 현재 글보다 cno가 작은 값 중에서 가장 최신 1개
+		previous_post = Content.objects.filter(cno__lt=cno).order_by('-cno').first()
 
-		# 다음글: 현재 글보다 cno가 큰 값 중에서 오래된 순으로 최대 4개
-		next_posts = Content.objects.filter(cno__gt=cno).order_by('cno')[:4]
+		# 다음글: 현재 글보다 cno가 큰 값 중에서 가장 오래된 1개
+		next_post = Content.objects.filter(cno__gt=cno).order_by('cno').first()
 
-		# 이전글과 다음글 개수 확인
-		total_previous = previous_posts.count()
-		total_next = next_posts.count()
+		# 현재 페이지 번호 가져오기
+		pageNum = int(request.GET.get('pageNum', 1))
 
-		# 이전글과 다음글의 개수를 조정 (합쳐서 4개까지 보여줌)
-		if total_previous + total_next > 4:
-				if total_previous >= 2 and total_next >= 2:
-						# 이전글과 다음글이 각각 2개씩 출력
-						previous_posts = previous_posts[:2]
-						next_posts = next_posts[:2]
-				elif total_previous < 2:
-						# 이전글이 부족하면 다음글로 채움
-						next_posts = next_posts[:4 - total_previous]
-				elif total_next < 2:
-						# 다음글이 부족하면 이전글로 채움
-						previous_posts = previous_posts[:4 - total_next]
+		session_id = request.session.get('session_id')
+		member = Member.objects.filter(id=session_id).first()
+		mdiary = MdiaryBoard.objects.filter(id=member).first()
 
-		# context = {'cont':mdiary[0]}
-		# pagen = request.GET.get('pageNum')
-		# pageNum = int(pagen)
-		pageNum = int(request.GET.get('pageNum'))
-		previous_pages = [pageNum - i for i in range(1, 5) if pageNum - i > 0]
-
-		adjusted_pageNum = pageNum - 1
-		adjusted_pageNum2 = pageNum - 2
 		context = {
 				'cont': current_post[0],
-				'previous_posts': previous_posts,  # 최대 4개의 이전글
-				'previous_pages': previous_pages,
-				'next_posts': next_posts,          # 최대 4개의 다음글
-				'pageNum':pageNum,
-				'adjusted_pageNum': adjusted_pageNum,
-				'adjusted_pageNum2':adjusted_pageNum2
+				'previous_post': previous_post,  # 이전글 1개
+				'next_post': next_post,          # 다음글 1개
+				'pageNum': pageNum,
+				'mdiary':mdiary
 		}
-		return render(request,'diary_view.html',context)
+		return render(request,'diary_view.html',context,)
+
+
+## 글수정페이지, 글수정 저장
+def dmodify(request,cno):
+	print("게시글 번호 : ",cno)
+	if request.method == "GET":
+		id = request.session.get('session_id')  # 현재 사용자의 ID 가져오기
+		qs = Content.objects.filter(cno=cno)
+		user = Member.objects.filter(id=id)
+		created_d = qs[0].group_diary
+		joined_d = qs[0].group_diary
+		user = Member.objects.filter(id=id)
+		created_group = user[0].created_group
+		joined_group = user[0].joined_group
+		context = {"diary":qs[0],"created_group":created_group,"created_d":created_d,"joined_group":joined_group,"joined_d":joined_d}
+		print("sssssssssssssssssss",context)
+		return render(request,'dmodify.html',context)
+	
+	else:  #post
+		# cno = request.POST.get("cno")
+		ctitle = request.POST.get("title")
+		ccontent = request.POST.get("content")
+		cdate = request.POST.get("date")
+		image = request.POST.get("image")
+		qs = Content.objects.get(cno=cno)
+		qs.ctitle = ctitle
+		qs.ccontent = ccontent
+		qs.cdate = cdate
+		if image:
+			qs.image = image
+		qs.save()
+
+		return render(request,'dmodify.html',{'u_msg':cno})

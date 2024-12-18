@@ -91,7 +91,7 @@
         <img src="/static/images/diary/addBtn.png" alt="" id="openModal_1" style="cursor: pointer;"> <!-- 커서 포인터 추가 -->
         <div class="sub_menu_modal" id="sub_menu_modal_1">
           <div id="sub_menu_content">
-            <button id="editButton_1">수정</button>
+            <a href="/diary/dmodify/{{cont.cno}}"><button id="editButton_1">수정</button></a>
             <button id="deleteButton_1">삭제</button>
           </div>
         </div>
@@ -99,7 +99,7 @@
     </div>
     <div id="diary_content">
       {% if cont.image %}
-      <img src="{{ cont.image.url }}" alt="Diary Image">
+      <img src="{{ cont.image.url }}" alt="Diary Image" name="image">
       {% endif %}
       <p style="width: 1052px;">
         {{cont.ccontent}}
@@ -114,7 +114,7 @@
           <col style="width:20%;">
         </colgroup>
         <tr>
-          <th colspan="4">우리 가족 일기</th>
+          <th colspan="4">{{mdiary.mtitle}}</th>
         </tr>
         {% if content %}
         {% for c in content %}
@@ -127,29 +127,38 @@
         {% endfor %}
         {% endif %}
 
-        <!-- 다음 글 최대 4개 -->
-        {% for post in next_posts %}
-        <tr>
-          <td>{{ pageNum|add:forloop.revcounter }}</td>
-          <td>
-            <a href="/diary/diary_view/{{c.cno}}">{{ post.ctitle }}</a>
-          </td>
-          <td>{{ post.member.name }}</td>
-          <td>{{ post.cdate|date:"Y.m.d" }}</td>
-        </tr>
-        {% endfor %}
 
-        <!-- 이전 글 최대 4개 -->
-        {% for post in previous_posts %}  
+        <!-- 이전 글 -->
+        {% if previous_post %}
         <tr>
-          <td>{{ adjusted_pageNum }}</td>
-          <td>
-            <a href="/diary/diary_view/{{c.cno}}">{{ post.ctitle }}</a>
-          </td>
-          <td>{{ post.member.name }}</td>
-          <td>{{ post.cdate|date:"Y.m.d" }}</td>
+            <td>이전글</td>
+            <td>
+                <a href="/diary/diary_view/{{ previous_post.cno }}">{{ previous_post.ctitle }}</a>
+            </td>
+            <td>{{ previous_post.member.name }}</td>
+            <td>{{ previous_post.cdate|date:"Y.m.d" }}</td>
         </tr>
-        {% endfor %} 
+        {% endif %}
+
+        <!-- 현재 글 -->
+        {% comment %} <tr>
+            <td>현재글</td>
+            <td>{{ cont.ctitle }}</td>
+            <td>{{ cont.member.name }}</td>
+            <td>{{ cont.cdate|date:"Y.m.d" }}</td>
+        </tr> {% endcomment %}
+
+        <!-- 다음 글 -->
+        {% if next_post %}
+        <tr>
+            <td>다음글</td>
+            <td>
+                <a href="/diary/diary_view/{{ next_post.cno }}">{{ next_post.ctitle }}</a>
+            </td>
+            <td>{{ next_post.member.name }}</td>
+            <td>{{ next_post.cdate|date:"Y.m.d" }}</td>
+        </tr>
+        {% endif %}
 
 
 
@@ -231,6 +240,8 @@
       console.log('하트 클릭됨');
       this.src = this.src.includes('/static/images/diary/Favorite_light.png') ? '/static/images/diary/Favorite_duotone.png' : '/static/images/diary/Favorite_light.png';
     });
+
+
   </script>
 </body>
 </html>
