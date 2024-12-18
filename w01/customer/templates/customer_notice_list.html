@@ -49,17 +49,12 @@
             <div class="tit_post">
               <div class="num_txt">{{forloop.revcounter}}</div> 
               <div>{{notice.btitle}}</div> 
-              <div id="Nname">관리자</div>
             </div>
-            <p class="desc_cont">
-              <span class="list_txt">{{notice.bcontent}}</span>
-            </p>
           </div>
           <dl class="list_post_info">
             <dd class="txt_g">
-              <span>{{notice.bdate|date:'Y-m-d'}}</span><span class="space"> | </span>
-              <span>댓글</span><span>01</span><span class="space"> | </span>
-              <span>좋아요</span><span>02</span>
+              <span>관리자</span><span class="space"> | </span>
+              <span>{{notice.bdate|date:'Y-m-d'}}</span>
             </dd>
           </dl>
         </a>

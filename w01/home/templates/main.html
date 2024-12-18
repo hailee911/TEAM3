@@ -235,7 +235,8 @@
 				<div id="d_txt" class="main_txt">
 					<p>나의 가장 사소한 일상은<br>
 						우리 가족에겐 가장 소중한 이야기에요<br>
-						가족과 함께 소중한 추억의 한 페이지를 엮어 보세요.</p>
+						가족과 함께 소중한 추억의 한 페이지를 엮어 보세요.
+					</p>
 				</div>
 				<button type="button" onclick="" class="main_btn">일상 공유하기&nbsp&nbsp&nbsp></button>
 			</div>
@@ -271,8 +272,8 @@
 
 		</div>
 
-
 		<div id="main_sec2">
+			<!-- 포스트 카드 섹션 -->
 			<div id="main_card">
 				<div class="main_txt">
 					<p>
@@ -283,32 +284,93 @@
 					<div id="card_arrow">
 						<p><img id="left_arrow" src="/static/images/home/left_card.png" alt="이전카드"></p>
 						<p><img id="right_arrow" src="/static/images/home/right_card.png" alt="다음카드"></p>
-				</div>
+					</div>
 				</div>
 				<div id="card_list">
-					<div class="card_title">
-						<span>
-							칭찬 다이어리를 써보세요.
-						</span>
-					</div>
-					<div class="card_title_list">
-						<span>
-							감사일기를 써볼까요?
-						</span>
-					</div>
-					<div class="card_title_list">
-						<span>
-							요즘 유행하는 MZ어
-						</span>
-					</div>
-					<div class="card_title_list">
-						<span>
-							서운한 일을 적어보세요.
-						</span>
-					</div>
-
+					{% if post_lists %}
+						{% for post in post_lists %}
+						<div class="cards" style="background-image: url('{{ post.bfile_thumbnail.url }}');">
+						</div>
+						{% endfor %}
+					{% else %}
+						<div class="cards">
+							<p class="card_title">내용이 없ㅅ브니다.</p>
+						</div>
+					{% endif %}
 				</div>
 			</div>
+			<!--카드 슬라이드 스크립트-->
+			<script>
+				$(function(){
+					$("#card_list").click(function(){
+						location.href='/customer/'
+					})
+				})
+				document.addEventListener('DOMContentLoaded', () => {
+					const cards = document.querySelectorAll('.cards');
+					const leftArrow = document.getElementById('left_arrow');
+					const rightArrow = document.getElementById('right_arrow');
+					let currentIndex = 0; // 현재 활성화된 카드의 인덱스
+					const slideInterval = 5000; // 자동 슬라이드 시간 간격 (밀리초)
+					const cardCount = cards.length;
+			
+					// 카드 초기 상태 설정
+					cards.forEach((card, index) => {
+							card.style.position = 'absolute';
+							card.style.top = 0;
+							card.style.left = 0;
+							card.style.transition = 'opacity 0.5s ease';
+							card.style.opacity = index === 0 ? 1 : 0; // 첫 번째 카드만 보임
+							card.style.zIndex = index === 0 ? 10 : 0; // 첫 번째 카드가 맨 위
+					});
+			
+					// 카드 전환 함수
+					const showSlide = (nextIndex) => {
+							cards[currentIndex].style.opacity = 0; // 현재 카드 숨김
+							cards[currentIndex].style.zIndex = 0; // z-index 낮춤
+			
+							cards[nextIndex].style.opacity = 1; // 다음 카드 표시
+							cards[nextIndex].style.zIndex = 10; // z-index 올림
+			
+							currentIndex = nextIndex; // 현재 인덱스 갱신
+					};
+			
+					// 이전 카드로 이동
+					const moveToPrevious = () => {
+							const nextIndex = (currentIndex - 1 + cardCount) % cardCount;
+							showSlide(nextIndex);
+					};
+			
+					// 다음 카드로 이동
+					const moveToNext = () => {
+							const nextIndex = (currentIndex + 1) % cardCount;
+							showSlide(nextIndex);
+					};
+			
+					// 자동 슬라이드 설정
+					let autoSlide = setInterval(moveToNext, slideInterval);
+			
+					// 화살표 클릭 이벤트
+					leftArrow.addEventListener('click', () => {
+							clearInterval(autoSlide); // 자동 슬라이드 중지
+							moveToPrevious();
+							autoSlide = setInterval(moveToNext, slideInterval); // 자동 슬라이드 재개
+					});
+			
+					rightArrow.addEventListener('click', () => {
+							clearInterval(autoSlide); // 자동 슬라이드 중지
+							moveToNext();
+							autoSlide = setInterval(moveToNext, slideInterval); // 자동 슬라이드 재개
+					});
+			
+					// 카드 위에 마우스를 올리면 자동 슬라이드 중지
+					const cardList = document.getElementById('card_list');
+					cardList.addEventListener('mouseenter', () => clearInterval(autoSlide));
+					cardList.addEventListener('mouseleave', () => autoSlide = setInterval(moveToNext, slideInterval));
+			});
+			
+			</script>
+			<!-- 포스트 카드 섹션 -->
 
 			<div id="happy_rate">
 				<div class="main_txt">

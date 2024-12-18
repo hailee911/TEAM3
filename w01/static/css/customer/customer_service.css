@@ -82,8 +82,7 @@ table, tr, td{
 .customer_service_notice_table{
   border: 1px solid #f6f6f6;
   /* box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); */
-
-  border-radius: 4px;
+  border-radius: 20px;
   background: #f5f5f5;
   box-shadow: 20px 20px 60px #e7e7e7d2,-20px -20px 60px #ffffff;
   margin-top: 20px;
@@ -92,6 +91,12 @@ table, tr, td{
 #customer_service_notice table{
   margin: 20px 0;
   width: 100%;
+}
+
+#customer_service_notice table tr:hover {
+  border-radius: 20px;
+  background-color: #fafafa;
+  cursor: pointer;
 }
 
 
@@ -167,7 +172,11 @@ table, tr, td{
   color: #222;
   cursor: pointer;
 }
-
+.customer_service_q:hover {
+  background-color: #f0f0f0; /* 원하는 배경색 */
+  cursor: pointer; /* 마우스를 올렸을 때 포인터 커서 */
+  border-radius: 20px;
+}
 
 .customer_service_q strong{
   margin-right: 10px;
