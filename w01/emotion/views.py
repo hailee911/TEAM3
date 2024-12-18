@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from datetime import datetime, timedelta
-from django.db.models import Sum, Count, F
+from django.db.models import Sum, Count, F, Q
 from django.db.models.functions import Extract, TruncDate
 from math import ceil
 from calendar import monthrange
@@ -142,12 +142,11 @@ def run_ai_process(request):
 def report(request):
     return render(request, 'report.html')
 
-
-# Create your views here.
 def main(request):
   # 프로필 가져오기 
-  mem = Member.objects.filter(id = request.session['session_id'])
-  
+  id = request.session['session_id']
+  mem = Member.objects.filter(id = id )
+  name = mem[0].name
   # 날짜 가져오기
   current_date = datetime.today()
   year = current_date.year
@@ -162,7 +161,19 @@ def main(request):
   # 주 수 계산
   week_number = (days_into_month // 7) + 1
 
-  context = {'mem_info':mem[0], 'year':year, 'month':month, 'week':week_number}
+  ## 일기 몇개 썼는지 가져오기
+  # main_data5에서 데이터 가져오기
+  data, total_value, total_value2 = get_data5(id)
+    
+  context = {
+      'mem_info':mem[0], 
+      'year':year, 
+      'month':month, 
+      'week':week_number, 
+      'name':name[1:],
+      'total_value':total_value,
+      'total_value2':total_value2
+      }
   return render(request, 'e_main.html', context)
 
 def main_data1(request):
@@ -333,22 +344,76 @@ def main_data5(request):
     last_day_of_month = datetime(target_year, target_month, monthrange(target_year, target_month)[1])
 
     # 해당 월에 작성된 일기 수 구하기
-    diary_count = EmotionScore.objects.filter(
+    diary = Content.objects.filter(
         member=id,
-        diarydate__gte=first_day_of_month,
-        diarydate__lte=last_day_of_month
-    ).count()
+        cdate__gte=first_day_of_month,
+        cdate__lte=last_day_of_month
+    )
+    diary_count = diary.count()
 
+    # 해당 월에 공유된 일기 수 구하기
+    sdiary_count = 0
+    for d in diary:
+        if d.group_diary.exists():
+            count = 1
+        else: 
+            count = 0
+        sdiary_count += count
+    
     if diary_count == 0:
         diary_count = 0
 
     # data에 월과 일기 수 추가
     data.append({
         "name": f"{target_month}월",  # name에 월을 넣음
-        "value": diary_count         # value에 해당 월의 일기 수
+        "value": diary_count,         # value에 해당 월의 일기 수
+        'value2': sdiary_count
     })
 
   print('데이터 5 : ',data)
   # 데이터를 역순으로 정렬 (가장 최근 데이터가 오른쪽에 오도록)
   data.reverse()
   return JsonResponse(data, safe=False)
+
+def get_data5(id):
+    # 현재 날짜 기준으로 year, month 구하기
+    current_date = datetime.today()
+
+    # 데이터를 저장할 리스트
+    data = []
+
+    # 4개월 전부터 현재 월까지의 데이터 구하기
+    for i in range(4):  # 최근 4개월
+        target_month = current_date.month - i
+        target_year = current_date.year
+
+        if target_month <= 0:
+            target_month += 12
+            target_year -= 1
+
+        # 해당 월의 첫날과 마지막 날 계산
+        first_day_of_month = datetime(target_year, target_month, 1)
+        last_day_of_month = datetime(target_year, target_month, monthrange(target_year, target_month)[1])
+
+        # 해당 월에 작성된 일기 수 구하기
+        diary = Content.objects.filter(
+            member_id=id,
+            cdate__gte=first_day_of_month,
+            cdate__lte=last_day_of_month
+        )
+        diary_count = diary.count()
+
+        # 해당 월에 공유된 일기 수 구하기
+        sdiary_count = sum(1 for d in diary if d.group_diary.exists())
+
+        data.append({
+            "name": f"{target_month}월",  # 월 이름
+            "value": diary_count,         # 해당 월의 일기 수
+            'value2': sdiary_count       # 해당 월의 공유된 일기 수
+        })
+
+    # 데이터 총합 계산
+    total_value = sum(item['value'] for item in data)
+    total_value2 = sum(item['value2'] for item in data)
+
+    return data, total_value, total_value2

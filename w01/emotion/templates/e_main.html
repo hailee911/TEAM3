@@ -41,7 +41,7 @@
       <h2>내 감정 돌아보기</h2>
     </div>
     <div id="emotion_main_top">
-      <p>용준 님의 기록을 바탕으로 AI가 분석한 감정 점수에요.</p>
+      <p>{{name}} 님의 기록을 바탕으로 AI가 분석한 감정 점수에요.</p>
       <div class="emotion_main_graph">
         <div class="emotion_graph_m">
           <div class="graph_r_title">
@@ -66,9 +66,9 @@
               <li><img src="/static/images/emotion/bad.png" alt=""></li>
             </ul>
             <ul class="comment">
-              <li>용준 님은 이번 주 금요일이 가장 점수가 높았어요.</li>
-              <li>용준 님은 이번 주 토요일이 가장 점수가 낮았어요.</li>
-              <li>용준 님은 주 단위 감정 점수의 기복이 크지 않지만, 요일별로 기복
+              <li>{{name}}님은 이번 주 금요일이 가장 점수가 높았어요.</li>
+              <li>{{name}}님은 이번 주 토요일이 가장 점수가 낮았어요.</li>
+              <li>{{name}}님은 주 단위 감정 점수의 기복이 크지 않지만, 요일별로 기복
                 차가 나타나는 경향이 있어요.</li>
             </ul>
           </div>
@@ -78,7 +78,7 @@
     </div>
     <div id="emotion_main_bottom">
       <div id="emotion_main_bottom_left">
-        <span>용준 님을 가장 잘 알것 같은 가족은?</span>
+        <span>{{name}}님을 가장 잘 알것 같은 가족은?</span>
         <div class="emotion_main_graph">
           <div class="family_graph_r">
             <div class="graph_r_title">
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div id="emotion_main_bottom_right">
-        <span>용준 님은 다이어리를 얼마나 썼을까요?</span>
+        <span>{{name}}님은 다이어리를 얼마나 썼을까요?</span>
         <div class="emotion_main_graph">
           <div class="personal_graph">
             <div class="graph_r_title">
@@ -104,7 +104,11 @@
             </div>
             <div class='personal_graphh'></div>
           </div>
-          <div class="personal_graph_r">그래프</div>
+          <div class="personal_graph_r">
+            <p style='font-size: 20px; font-weight: bold;'>{{name}}님은 최근 4개월 동안</p><br/>
+            <div><p style="color: #344BFD; font-size: 20px; font-weight: bold;">총 {{total_value}}번의 일상을 기록</p><p style="font-size: 20px;">했고</p></div>
+            <div><p style="color: #F68D2B; font-size: 20px; font-weight: bold; letter-spacing: -1.5px;">그 중 {{total_value2}}번의 일상을 가족과 공유</p><p style="font-size: 20px;">했어요.</p></div>
+          </div>
         </div>
       </div>
     </div>

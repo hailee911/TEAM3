@@ -258,7 +258,9 @@ def diaryWrite(request):
         )
         new_diary.save()
         ## 공유하려는 다이어리가 있으면
-        if selected_groups[0]  != '' and  selected_groups[1]  != '':
+        if selected_groups[0]  ==  '' and  selected_groups[1]  == '':
+          return redirect('diary:MdiaryList')
+        else:
             # join된 일기장에만 공유
             if selected_groups[0] == '':
                 joined_group = GroupDiary.objects.filter(gno=selected_groups[1]).first()
@@ -273,8 +275,6 @@ def diaryWrite(request):
                 joined_group = GroupDiary.objects.filter(gno=selected_groups[1]).first()
                 new_diary.group_diary.add(created_group,joined_group)
             return redirect('diary:MdiaryList')  # 다이어리 리스트로 리다이렉트
-        else:
-          return redirect('diary:MdiaryList')
 
 
 # 다이어리 view 추후 업데이트 >>
