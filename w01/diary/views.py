@@ -333,3 +333,70 @@ def dmodify(request,cno):
 		qs.save()
 
 		return render(request,'dmodify.html',{'u_msg':cno})
+	
+
+
+## join 일기장 보기
+def JdiaryList(request):
+     if request.method == "GET":
+        # 세션에 저장된 ID 가져오기
+        session_id = request.session.get('session_id')  # 세션에서 'session_id'를 가져옴
+        print("세션아이디:", session_id)
+        # session_id를 기준으로 Member 찾기
+        member = Member.objects.filter(id=session_id).first()
+        if member.joined_group:
+          # Member 에서 join 다이어리 gno 가져오기
+          gno = member.joined_group.gno
+          joingroup = GroupDiary.objects.filter(gno=gno).first()
+          print('조인된 그룹 : ',joingroup)
+          print('조인된 그룹 : ',joingroup.created_at)
+          # join다이어리의 Content 가져오기
+          contents = joingroup.content_set.all().order_by("-cdate")  # 해당 GroupDiary에 연결된 모든 Content 객체 가져오기
+          print(contents[0].ctitle)
+          if not contents:
+            return render(request, 'JdiaryList.html')
+          npage = request.GET.get('npage', 1)
+          paginator = Paginator(contents, 10)
+          page_obj = paginator.get_page(npage)
+          context = {
+            'member':member,
+            'content': page_obj.object_list,
+            'JdiaryList':page_obj,
+            'jdiary':contents,
+            'joinDiary':joingroup }
+          return render(request, 'JdiaryList.html', context)
+        else:
+          return render(request, 'JdiaryList.html')
+				
+				
+# create 일기장 보기
+def CdiaryList(request):
+    if request.method == "GET":
+        id = request.session.get('session_id')  # 현재 사용자의 ID 가져오기
+        # 현재 로그인한 사용자 확인
+        member = Member.objects.filter(id=id).first()
+        if not member:
+            return HttpResponse("사용자 정보가 존재하지 않습니다.", status=400)
+        # 사용자가 만든 그룹 (created_group) 정보
+        created_group = member.created_group
+        # 사용자가 초대된 그룹 (joined_group) 정보
+        joined_group = member.joined_group
+        # 사용자가 속한 그룹에 해당하는 모든 게시글 가져오기
+        if created_group or joined_group:
+            # 자신이 속한 그룹에 공유된 게시글 가져오기
+            diaries = Content.objects.filter(
+                Q(group_diary=created_group) | Q(group_diary=joined_group),  # 그룹 다이어리 기준으로
+                group_diary__isnull=False  # group_diary가 None이 아닌 게시글만
+            ).order_by('-cdate')  # 최신순 정렬
+        else:
+            diaries = Content.objects.none()  # 그룹에 속하지 않으면 게시글 없음
+        return render(request, 'CdiaryList.html', {
+            'diaries': diaries,            # 다이어리 리스트
+            'created_group': created_group  # 그룹 정보
+        })
+
+
+
+
+
+

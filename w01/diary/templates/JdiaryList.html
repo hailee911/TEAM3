@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static '/css/diary/Mdiary_list.css'%}">
+  <link rel="stylesheet" href="{% static '/css/home/main.css'%}">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <title>내 다이어리 목록</title>
+</head>
+<!-- 공통 상단좌측메뉴 -->
+<script>
+  $(function() {
+    // GNB 클릭
+    $('#menu ul li').on('click', function() {
+      $('#menu ul li').removeClass('active');
+      $(this).addClass('active');
+    });
+  });
+</script>
+</head>
+<body>
+<!-- 최상단 메뉴 -->
+<div id="top_nav">
+  <h1><a href="#"></a></h1>
+  <ul class="top_menu">
+    <li><a href="#"><img src="/static/images/home/search_icon.png" alt=""></a></li>
+    <li><a href="#"><img src="/static/images/home/bell_off_icon.png" alt=""></a></li>
+    <li><a href="#">마이페이지</a></li>
+  </ul>
+</div>
+<!-- 좌측 gnb -->
+<div id="gnb">
+  <!-- 프로필 -->
+  <div id="user_profile">
+    <div id="pimg">
+      <img src="/static/images/home/default_profile.png" alt="">
+    </div>
+    <p id="uName">{{member.name}}</p>
+    <p id="uEmail">{{member.mail}}</p>
+  </div>
+  <!-- Nav -->
+  <nav id="menu">
+    <ul>
+      <a href="/main/index/"><li class="menu_item">우리 가족 이야기</li></a>
+      <a href="/diary/diaryHome/"><li class="menu_item active">다이어리</li></a>
+      <a href="/emotion/main/"><li class="menu_item">감정 돌아보기</li></a>
+      <a href="/family1/fam/"><li class="menu_item">우리가족</li></a>
+      <a href="/calendar1/cal/"><li class="menu_item">캘린더</li></a>
+      <a href="/customer/"><li class="menu_item">알려드려요</li></a>
+    </ul>
+  </nav>
+  <!-- logout -->
+  <div id="logout">
+    <a href="/main/logout/"><span>로그아웃</span></a>
+  </div>
+</div>
+<!-- 공통 상단좌측메뉴 -->
+<!-- 다이어리 리스트 -->
+<div id="main_area">
+  <div id="title_area">
+    <p id="infoTit">
+      {% if jdiary %}
+        {{ joinDiary.gtitle }}
+        <p id="dateTit">{{joinDiary.created_at|date:"Y년 m월 d부터 씀"}}</p>
+      {% else %}
+        다이어리 이름을 설정해 주세요.
+      {% endif %}
+    </p>
+    
+  </div>
+  <div id="list_area">
+    {% if jdiary %}
+    {% for j in jdiary %}
+    <div class="list_group">
+      <a href="/diary/diaryView/">
+        <div class="wrap_cont">
+          <span class="tit_post"><span class="num_txt">{{forloop.revcounter}}</span>{{j.ctitle}}</span>
+          <p class="desc_cont">
+            <span class="diaryTit">{{j.member.name}}</span><span class="space"> | </span>
+            <span class="list_txt">{{j.ccontent}}
+            </span>
+          </p>
+        </div>
+        <dl class="list_post_info">
+          <dd class="txt_g">
+            <span>{{ j.cdate|date:"Y.m.d" }}</span><span class="space"> | </span>
+            <span>댓글</span><span>01</span><span class="space"> | </span>
+            <span>좋아요</span><span>02</span>
+          </dd>
+        </dl>
+      </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    공유 받은 일기장이 없어요!
+    {% endif %}
+    </div>
+  </div>
+  <ul class="page_num">
+    <!-- 이전페이지 확인 -->
+    {% if JdiaryList.has_previous %}
+      <a href="?npage=1"><li class="first"><img src="/static/images/diary/left_double.png" alt=""></li></a>
+      <a href="?npage={{JdiaryList.previous_page_number}}"><li class="prev"><img src="/static/images/diary/left.png" alt=""></li></a>
+    {% else %}
+      <li class="first"></li>
+      <li class="prev"></li>
+    {% endif %}
+    <!-- 순차적 페이지 넘버링 -->
+    {% for page in JdiaryList.paginator.page_range %}
+      {% if page == JdiaryList.number %}
+        <a href="#"><li class="nowNum"><strong>{{page}}</strong></li></a>
+      {% else %}
+        <a href="?npage={{page}}"><li class="num"><div>{{page}}</div></li></a>
+    {% comment %} <li class="nowNum"><a href="#">1</a></li> {% endcomment %}
+      {% endif %}
+    {% endfor %}
+    <!-- 이후페이지 확인 -->
+    {% if JdiaryList.has_next %}
+      <a href="?npage={{diary.next_page_number}}"><li class="next"><img src="/static/images/diary/right.png" alt=""></li></a>
+      <a href="?npage={{diary.paginator.num_pages}}"><li class="last"><img src="/static/images/diary/right_double.png" alt=""></li></a>
+    {% else %}
+      <li class="next"></li>
+      <li class="last"></li>
+    {% endif %}
+  </ul>
+</div>
+
+</body>
+</html>
