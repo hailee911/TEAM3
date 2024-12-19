@@ -312,7 +312,10 @@ def diaryWrite(request):
     )
     new_diary.save()
     ## 공유하려는 다이어리가 있으면
-    if selected_groups[0]  != '' and  selected_groups[1]  != '':
+    print("selected_groups : ",selected_groups)
+    if selected_groups[0]  == '' and  selected_groups[1]  == '':
+      return redirect('diary:MdiaryList')
+    else:
         # join된 일기장에만 공유
         if selected_groups[0] == '':
             joined_group = GroupDiary.objects.filter(gno=selected_groups[1]).first()
@@ -326,9 +329,9 @@ def diaryWrite(request):
             created_group = GroupDiary.objects.filter(gno=selected_groups[0]).first()
             joined_group = GroupDiary.objects.filter(gno=selected_groups[1]).first()
             new_diary.group_diary.add(created_group,joined_group)
+        print("그룹다이어리 : ",new_diary.group_diary)
         return redirect('diary:MdiaryList')  # 다이어리 리스트로 리다이렉트
-    else:
-      return redirect('diary:MdiaryList')
+      
 
 
 # 다이어리 view 추후 업데이트 >>
@@ -338,3 +341,50 @@ def diaryView(request):
   qs = Content.objects.filter(member=member[0])
   context = {"content":qs}
   return render(request,'diary_view.html',context)
+
+# 좋댓
+# from .models import Comment, Like
+
+
+# # 좋아요 처리
+# def toggle_like(request, content_id):
+#     if request.method == "POST":
+#         member_id = request.session.get('session_id')
+#         if not member_id:
+#             return JsonResponse({"error": "로그인 상태가 아닙니다."}, status=401)
+
+#         member = Member.objects.get(id=member_id)
+#         content = Content.objects.get(pk=content_id)
+
+#         # 좋아요 상태 토글
+#         like, created = Like.objects.get_or_create(content=content, member=member)
+#         if not created:
+#             like.delete()
+#             liked = False
+#         else:
+#             liked = True
+
+#         # 좋아요 개수 반환
+#         like_count = Like.objects.filter(content=content).count()
+#         return JsonResponse({"liked": liked, "like_count": like_count})
+
+# # 댓글 작성
+# def add_comment(request, content_id):
+#     if request.method == "POST":
+#         member_id = request.session.get('session_id')
+#         text = request.POST.get("text")
+
+#         if not member_id or not text:
+#             return JsonResponse({"error": "잘못된 요청입니다."}, status=400)
+
+#         member = Member.objects.get(id=member_id)
+#         content = Content.objects.get(pk=content_id)
+
+#         comment = Comment.objects.create(content=content, member=member, text=text)
+
+#         return JsonResponse({
+#             "comment_id": comment.id,
+#             "member_name": member.name,
+#             "created_at": comment.created_at.strftime("%Y.%m.%d %H:%M:%S"),
+#             "text": comment.text,
+#         })

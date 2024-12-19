@@ -114,7 +114,7 @@ def run_ai_process(request):
         selected_mbti = request.GET.get('mbti')
     
     # Google Vertex AI 설정
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "emotion/gemini/alert-condition-443702-g2-b42a52a8995d.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ""
     vertexai.init(project="alert-condition-443702-g2", location="us-central1")
     
     # AI 작업 실행
