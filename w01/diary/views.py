@@ -321,3 +321,29 @@ def JdiaryList(request):
 					return render(request, 'JdiaryList.html', context)
 				else:
 					return render(request, 'JdiaryList.html')
+				
+# create 일기장 보기
+def CdiaryList(request):
+    if request.method == "GET":
+        id = request.session.get('session_id')  # 현재 사용자의 ID 가져오기
+        # 현재 로그인한 사용자 확인
+        member = Member.objects.filter(id=id).first()
+        if not member:
+            return HttpResponse("사용자 정보가 존재하지 않습니다.", status=400)
+        # 사용자가 만든 그룹 (created_group) 정보
+        created_group = member.created_group
+        # 사용자가 초대된 그룹 (joined_group) 정보
+        joined_group = member.joined_group
+        # 사용자가 속한 그룹에 해당하는 모든 게시글 가져오기
+        if created_group or joined_group:
+            # 자신이 속한 그룹에 공유된 게시글 가져오기
+            diaries = Content.objects.filter(
+                Q(group_diary=created_group) | Q(group_diary=joined_group),  # 그룹 다이어리 기준으로
+                group_diary__isnull=False  # group_diary가 None이 아닌 게시글만
+            ).order_by('-cdate')  # 최신순 정렬
+        else:
+            diaries = Content.objects.none()  # 그룹에 속하지 않으면 게시글 없음
+        return render(request, 'CdiaryList.html', {
+            'diaries': diaries,            # 다이어리 리스트
+            'created_group': created_group  # 그룹 정보
+        })
